@@ -178,6 +178,165 @@ gfbmmghhhhh
 }
 
 
+
+.footer {
+  height: 60vh;
+  background-color: #0b0b3b;
+  padding: 2rem 2rem 0 2rem;
+  color: #ccc;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding-bottom: 1.5rem;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-logo .icono-footer {
+  width: 90px;
+}
+
+.footer-logo .titulo-footer{
+  width: 290px;
+}
+
+.footer-subscribe{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.footer-subscribe .subcipcion{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-subscribe input {
+  outline: none;
+  padding: 0.5rem;
+  width: 200px;
+  border: none;
+  border-radius: 3px 0 0 3px;
+}
+
+.footer-subscribe button {
+  position: relative;
+  top: 0;
+  padding: 0.5rem;
+  background-color: #141c8a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 5ms ease-in;
+}
+
+.footer-subscribe button:hover{
+  background-color: #1c259b ;
+}
+
+.metodosP{
+  display: flex;
+  font-size: 27px;
+  gap: 5px;
+}
+.metodosP li a{
+  color: #3d5270;
+  transition: color 50ms ease;
+}
+
+.metodosP li a:hover{
+  color: #0046cc;
+}
+
+
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.footer-col h3 {
+  color: #292b7b;
+  margin-bottom: 0.5rem;
+}
+
+.footer-col ul{
+  
+  list-style: none;
+  padding: 0;
+}
+
+.footer-col ul li a {
+  margin-bottom: 0.5rem;
+  color: #85aeca;
+
+}
+
+.footer-col .social-icons i {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.footer-bottom {
+  height: 20%;
+  position: relative;
+  margin-top: 2rem;
+  text-align: center;
+  border-top: 1px solid #333;
+  font-size: 0.9rem;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.footer-links{
+  text-align: end;
+  }
+
+.footer-links a {
+  color: #bbb;
+  margin: 0 0.5rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: #00ccff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 footer{
     background-color: #05021d;
     font-size: 20px;
