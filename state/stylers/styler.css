@@ -149,20 +149,31 @@ header {
 } 
 
 .nosotros .entidades .entidad{
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   }
 
+.nosotros .entidades .entidad{
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--main-color);
+  text-align: center;
+  text-justify: inter-word;
+}
+
 .nosotros .entidades img{
   width: 150px;
   height: auto;
   filter: grayscale(100%);
   transition: filter 0.3s;
+  transition: scale 0.2s ease-in-out;
 }
 .nosotros .entidades img:hover{
   filter: grayscale(0%);
+  scale: 1.1;
 }
 
 
