@@ -1,7 +1,7 @@
 :root{
 --color-oscuro: #021024;
 --main-color: #052659;
---main-color: #5483B3;
+--main-color-claro: #5483B3;
 --color-nav-after: #f2f3f4 #021024e1;
 --txt-menu-color: #163761;
 --txt-menu-color-after: #1573ee;
@@ -31,9 +31,10 @@ body {
 }
 
 
+
 .hero {
-    position: relative;
-  background: var(--color-oscuro) url('../imgs/Recurso.png') center/cover no-repeat ;
+  position: relative;
+  background: var(--color-oscuro) /*url('../imgs/Recurso 21.png') 50% 0% /cover no-repeat*/ ;
   background-size:20%;
   backdrop-filter: blur(5px);
   padding: 5rem 1rem;
@@ -47,6 +48,17 @@ body {
   font-size: 2.5rem;
   margin-bottom: 1rem;
 
+}
+
+.conten-inicio{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.conten-inicio span{
+    font-size: 3.5rem;
+    color: #00ccff;
 }
 
 .section {
@@ -72,26 +84,24 @@ header {
 
 @keyframes headerFondo {
 
-    50%, 100%{
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    20%, 100%{
+        box-shadow: 0 2px 2px rgba(0,0,0,0.2);
     }
 
 }
 
 .navbar {
-    max-width: 1200px;
     margin: auto;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     align-items: center;  
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .logo {
   width: 200px;  
   display: flex;
   align-content: center;
-
 }
 
 .logo img{
@@ -105,7 +115,6 @@ header {
   gap: 1.2rem;
 
 }
-gfbmmghhhhh
 .nav-links a {
 
   color: var(--txt-menu-color);
@@ -130,6 +139,84 @@ gfbmmghhhhh
 .btn:hover {
   background-color: #0046cc;
 }
+
+.nosotros .entidades{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 4rem 1rem;
+} 
+
+.nosotros .entidades .entidad{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  }
+
+.nosotros .entidades img{
+  width: 150px;
+  height: auto;
+  filter: grayscale(100%);
+  transition: filter 0.3s;
+}
+.nosotros .entidades img:hover{
+  filter: grayscale(0%);
+}
+
+
+/* POR QUE ELEGUISNOS */
+
+.value-prop{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;  
+  padding: 4rem 1rem;
+  background-color: #f9f9f9;}
+
+
+.value-prop .value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  width: 80%;
+  padding: 1rem 0;
+}
+
+.value-prop p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin-bottom: 1.5rem;
+}
+.value-prop .value-grid ul {
+  text-align: left;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+
+.value-prop .value-grid .value-img{
+  width: 90%;
+  border-radius: 10px;
+  width:100%;
+  height:100%;
+  background: linear-gradient(45deg, #1a1e5c, #8cbceb);
+  display:flex; align-items:center;
+  justify-content:center;
+  color:white;
+}
+
+.value-prop h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+
+
+
+
 
 
 .cards {
@@ -259,7 +346,6 @@ gfbmmghhhhh
 }
 
 
-
 .footer-content {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
@@ -285,8 +371,9 @@ gfbmmghhhhh
 }
 
 .footer-col .social-icons i {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-right: 0.5rem;
+  color: #6b5d9c;
 }
 
 .footer-bottom {
@@ -331,138 +418,6 @@ gfbmmghhhhh
 
 
 
-
-
-
-
-/*
-
-footer{
-    background-color: #05021d;
-    font-size: 20px;
-    box-shadow: -5px 2px 10px #000;
-}
-
-.capas-fotter{
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-}
-
-.empresa-comunicacion{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-       background-color: rgb(76, 107, 13);
-
-
-}
-
-.logo-footer{
-    width: 180px;
-}
-
-.logo-footer img{
-    width: 100%;
-}
-.contacto-footer{
-   width: 100%;
-   background-color: yellowgreen;
-}
-
-.redes{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    list-style: none;
-    gap: 10px;
-}
-
-.rede ul{
-  margin: 0;
-  text-align: center;
-}
-
-.redes li{
-    background-color:#061368;
-    font-size: 20px;
-    padding: 2% 3%;
-    text-align: center;
-    border-radius: 1px;
-    font-family: "Fira Code", serif;
-}
-
-.redes li a{
-    color: #a8adc4;
-}
-
-.disco{
-  text-align: center;
-  color: #fff;
-}
-
-.disco i{
-    animation: rotar 5s linear infinite;
-}
-
-.fa-compact-disc{
-    font-size: 25px;
-}
-
-@keyframes rotar{
-
-    to{
-        transform: rotateZ(360deg);
-    }
-}
-
-
-.lista-footer{
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  list-style: none;
-}
-
-.pagos{
-  background-color: whitesmoke;
-}
-
-.suscribciones{
-    position: relative;
-    margin: 10px auto;
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 11px;
-    color: #aeaebd;  
-}
-
-.metodosP{
-  display: flex;
-  text-align: center;
-  align-items: center;
-  list-style: none;
-  font-size: 30px;
-  gap: 5px;
-}
-.metodosP li a{
-  color: #fff;
-}
-
-
-.copy{
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-}
-
-.fa-copyright{
-    font-size: 10px;
-}
 
 
 

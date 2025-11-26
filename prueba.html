@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Connection | Tecnología y Diseño</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. DESIGN TOKENS (Variables Globales) --- */
+        :root {
+            /* Branding Colors extraídos de los logos */
+            --color-primary: #1a1e5c;    /* Azul Oscuro (Neural) */
+            --color-secondary: #8cbceb;  /* Azul Claro (Connection) */
+            --color-accent: #2d3485;     /* Variación para hovers */
+            --color-text-main: #333333;
+            --color-text-light: #ffffff;
+            --color-bg-light: #f8f9fa;
+            --color-bg-dark: #15172b;    /* Casi negro para contraste */
+            
+            /* Typography & Spacing */
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --container-width: 1200px;
+            --spacing-section: 5rem;
+            --border-radius: 8px;
+            
+            /* Shadows for depth (Material Physics simulation) */
+            --shadow-card: 0 4px 20px rgba(26, 30, 92, 0.1);
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; line-height: 1.2; }
+        
+        img { max-width: 100%; height: auto; display: block; }
+        
+        a { text-decoration: none; transition: all 0.3s ease; }
+        
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background-color: var(--color-secondary);
+            color: var(--color-primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px var(--color-secondary);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 { font-size: 2.2rem; color: var(--color-primary); }
+        .section-title p { color: #666; max-width: 600px; margin: 1rem auto 0; }
+
+        /* --- 3. HEADER --- */
+        header {
+            background: #fff;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container img { height: 50px; } /* Ajuste para el Imagotipo */
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a { color: var(--color-primary); font-weight: 600; font-size: 0.9rem; }
+        nav a:hover { color: var(--color-secondary); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract geometric background using CSS only (Lightweight) */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--color-secondary) 0%, transparent 70%);
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-text .slogan {
+            font-size: 1.5rem;
+            color: var(--color-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Efecto de flotación (Física simple) */
+        .hero-image img {
+            animation: float 6s ease-in-out infinite;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- 5. SERVICES (Grid System) --- */
+        .services { padding: var(--spacing-section) 0; background: var(--color-bg-light); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* O(1) layout calculation */
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s ease;
+            text-align: center;
+            border-top: 4px solid var(--color-secondary);
+        }
+
+        .service-card:hover { transform: translateY(-5px); }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+            height: 60px;
+            width: 60px;
+            background: #f0f4ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .brand-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--color-secondary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- 6. VALUE PROPOSITION --- */
+        .value-prop { padding: var(--spacing-section) 0; }
+        
+        .value-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .value-img {
+            background-color: #ddd;
+            height: 400px;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .value-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .value-list { list-style: none; margin-top: 2rem; }
+        .value-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .value-list li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        /* --- 7. FEATURES (Dark UI) --- */
+        .features {
+            background-color: #2c2f3f; /* Tono intermedio del wireframe */
+            color: #fff;
+            padding: var(--spacing-section) 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+        }
+
+        .feature-preview {
+            background: #000;
+            height: 350px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .play-btn {
+            width: 60px; height: 60px; background: rgba(255,255,255,0.2);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); cursor: pointer;
+        }
+
+        .feature-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .feature-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .feature-btn:hover { background: var(--color-secondary); color: var(--color-primary); }
+
+        /* --- 8. FOOTER & CONTACT --- */
+        .contact-section {
+            padding: var(--spacing-section) 0;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 4rem;
+        }
+
+        .mockup-phone {
+            background: var(--color-bg-dark);
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input, textarea, select {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 100%;
+            font-family: var(--font-body);
+        }
+
+        footer {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- RESPONSIVE (Mobile First Logic) --- */
+        @media (max-width: 768px) {
+            .hero-grid, .services-grid, .value-grid, .features-grid, .contact-section {
+                grid-template-columns: 1fr; /* Stack vertically */
+                gap: 2rem;
+            }
+
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-image { order: -1; } /* Image on top on mobile */
+            
+            nav { display: none; } /* Simplified mobile menu */
+            
+            .services-grid { grid-template-columns: 1fr 1fr; } /* 2x2 on tablet/large mobile */
+        }
+        
+        @media (max-width: 480px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .feature-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo-container">
+                <img src="Imagotipo.png" alt="Neural Connection Logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#products">Productos</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact" class="btn btn-primary" style="color:white;">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>Neural Connection</h1>
+                <p class="slogan">"Que buena idea, hacemos el resto."</p>
+                <p style="margin-bottom: 2rem; opacity: 0.9;">
+                    Somos el nexo entre tu visión y la realidad digital. Desde diseño gráfico de alto impacto hasta sistemas web complejos.
+                </p>
+                <a href="#contact" class="btn btn-primary">Iniciar Proyecto</a>
+            </div>
+            <div class="hero-image">
+                <img src="isotipo (2).png" alt="Cubo Tecnologico Neural" style="max-width: 300px;">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestras Soluciones</h2>
+                <p>Integramos creatividad técnica y robustez lógica.</p>
+            </div>
+            
+            <div class="services-grid">
+                <article class="service-card">
+                    <span class="brand-tag">Render Connection</span>
+                    <div class="service-icon">🎨</div>
+                    <h3>Diseño Gráfico</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                        Identidad visual, branding y material publicitario que comunica la esencia de tu marca.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <span class="brand-tag">Render Connection</span>
+                    <div class="service-icon">👕</div>
+                    <h3>Productos Personalizados</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                        Diseños únicos aplicados a productos físicos y digitales. Merchandising corporativo.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <span class="brand-tag">Connection CODE</span>
+                    <div class="service-icon">💻</div>
+                    <h3>Desarrollo Web</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                        Sitios web rápidos, responsivos y optimizados para SEO. Landing pages de alta conversión.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <span class="brand-tag">Connection CODE</span>
+                    <div class="service-icon">⚙️</div>
+                    <h3>Admin. de Sistemas</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                        Gestión técnica, mantenimiento de servidores y optimización de infraestructura digital.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="value-prop">
+        <div class="container value-grid">
+            <div class="value-content">
+                <span style="color: var(--color-secondary); font-weight:bold;">POR QUÉ ELEGIRNOS</span>
+                <h2 style="color: var(--color-primary); font-size: 2.5rem; margin: 1rem 0;">Diseño y Código en perfecta sincronía</h2>
+                <p>
+                    A diferencia de agencias tradicionales, en <strong>Neural Connection</strong> entendemos que un buen diseño necesita un código eficiente, y un código robusto necesita una interfaz intuitiva.
+                </p>
+                <ul class="value-list">
+                    <li>Soluciones integrales (End-to-End).</li>
+                    <li>Optimización de rendimiento (Web Vitals).</li>
+                    <li>Creatividad aplicada a resultados de negocio.</li>
+                </ul>
+                <a href="#" class="btn" style="border: 2px solid var(--color-primary); color: var(--color-primary); margin-top: 2rem;">Conocer más</a>
+            </div>
+            <div class="value-img">
+                <div style="width:100%; height:100%; background: linear-gradient(45deg, #1a1e5c, #8cbceb); display:flex; align-items:center; justify-content:center; color:white;">
+                    [Imagen Representativa de Equipo/Tech]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-preview">
+                    <div class="play-btn">▶</div>
+                    <p style="position: absolute; bottom: 20px; color: #ddd;">Showreel 2024</p>
+                </div>
+                <div class="feature-text">
+                    <h3 style="margin-bottom: 1rem; font-size: 2rem;">Capacidades Técnicas</h3>
+                    <p style="margin-bottom: 2rem; opacity: 0.8;">
+                        Explora nuestro stack tecnológico y herramientas de diseño.
+                    </p>
+                    <div class="feature-options">
+                        <div class="feature-btn">React / Next.js</div>
+                        <div class="feature-btn">Adobe Creative Suite</div>
+                        <div class="feature-btn">3D Modeling</div>
+                        <div class="feature-btn">Cloud Architecture</div>
+                        <div class="feature-btn">UI/UX Design</div>
+                        <div class="feature-btn">E-Commerce</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container contact-section">
+        <div class="contact-form-wrapper">
+            <h2 style="color: var(--color-primary); margin-bottom: 1rem;">Hablemos de tu proyecto</h2>
+            <p style="margin-bottom: 2rem;">Déjanos tus datos y nos pondremos en contacto.</p>
+            <form>
+                <input type="text" placeholder="Tu Nombre">
+                <input type="email" placeholder="Correo Electrónico">
+                <select>
+                    <option>Interesado en Render Connection (Diseño)</option>
+                    <option>Interesado en Connection CODE (Desarrollo)</option>
+                    <option>Ambos</option>
+                </select>
+                <textarea rows="4" placeholder="Cuéntanos sobre tu idea..."></textarea>
+                <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+            </form>
+        </div>
+        <div class="contact-visual">
+             <div class="mockup-phone">
+                <img src="isotipo (2).png" style="width: 80px; opacity: 0.5;">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div style="margin-bottom: 1rem;">
+                <img src="Logotipo.png" style="height: 30px; margin: 0 auto; filter: brightness(0) invert(1);" alt="Neural Footer">
+            </div>
+            <p>&copy; 2024 Neural Connection. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
