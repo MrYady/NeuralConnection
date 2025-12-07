@@ -1,1 +1,0 @@
-console.log("hola, Bienvenido a Neural Connection");

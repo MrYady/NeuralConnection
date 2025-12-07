@@ -62,7 +62,6 @@ body {
 }
 
 .section {
-  max-width: 1200px;
   margin: auto;
   padding: 4rem 1rem;
   text-align: center;
@@ -254,17 +253,72 @@ header {
   justify-content: center;
 }
 
-.project {
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   background-color: white;
   padding: 1rem;
-  border-radius: 8px;
-  max-width: 300px;
+  gap:  1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 2rem; ;
 }
+  .projects img {
+    width: 90%;
+    border-radius: 8px;
+  }
 
-.project img {
-  width: 100%;
-  border-radius: 4px;
-}
+
+  .projects .ptoyectgid .proyects-list{
+    border-right : 2px solid var(--main-color-claro);
+    padding:  0 1.5rem;
+    margin:  1.5rem;
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+    gap: 1.5rem;
+
+  }
+
+   .projects .proyect-actual{
+    background-color: var(--main-color-claro);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+    .projects .proyect-actual img {
+    width: 60%;
+   }
+
+
+
+  .projects h3 {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .projects p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #666;
+  }
+  .projects .proyect-item {
+    transition: all 0.3s ease;
+  }
+
+  .projects .proyect-item:hover {
+    border: 2px solid #0059ff;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background-color: #e6f0ff;
+  }
+
+    .projects .proyect-actualizar{
+      text-align: center;
+      font-size: 1.2rem;
+      color: #0059ff;
+      font-weight: bold;
+    }
 
 .testimonial {
   background-color: #e8f0fe;
@@ -274,6 +328,48 @@ header {
   margin: auto;
   font-style: italic;
 }
+
+
+
+/*  esfera movible */
+
+
+.esfera:active {
+      cursor: grabbing;
+  }
+
+  .esfera {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      cursor: grab;
+      background-color: var(--color-clarox);
+  }
+
+  canvas {
+      display: block;
+  }
+
+  .instruction {
+      bottom: 20px;
+      color: #666;
+      font-size: 0.9rem;
+      pointer-events: none;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
