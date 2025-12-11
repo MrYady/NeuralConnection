@@ -1,33 +1,38 @@
-/**
- * Implementación de Esfera de Texto usando Distribución de Fibonacci
- * Optimización: O(N) para renderizado y actualización.
- * Renderizado: HTML5 Canvas API (acelerado por GPU).
- */
-
 class TextSphere {
-    constructor(canvasId, texts) {
+    // Modificación 1: El constructor ahora recibe ambos datasets por separado
+    constructor(canvasId, techData, designData) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        this.texts = texts;
+        
+        // Unificamos los textos para la geometría
+        this.texts = [...techData, ...designData];
+        
+        // OPTIMIZACIÓN: Estructura de Datos O(1) para búsqueda rápida
+        this.designSet = new Set(designData);
+
         this.points = [];
         
-        // Configuración de Física y Proyección
-        this.radius = 300;          // Radio base de la esfera
-        this.baseSize = 15;         // Tamaño base de fuente
-        this.perspective = 800;     // Distancia de la cámara (FOV)
-        this.rotationSpeed = 0.05;  // Inercia base
+        // Parámetros Visuales
+        this.radius = 220;          
+        this.baseSize = 14;         
+        this.perspective = 600;     
         
-        // Estado de rotación
-        this.rotation = { x: 0, y: 0 };      // Rotación actual
-        this.velocity = { x: 0.001, y: 0.001 }; // Velocidad angular inicial
+        // Paleta de Colores (RGB Strings)
+        this.textColor = '248, 250, 252';    // Blanco (Tech Base)
+        this.activeColor = '146, 242, 240';    // Cyan (Tech Highlight)
+        this.designColor = '160, 175, 228';   // Naranja Coral (Diseño Gráfico)
+        
+        // Estado Físico
+        this.rotation = { x: 0, y: 0 };
+        this.velocity = { x: -0.001, y: 0.002 }; 
         this.lastMouse = { x: 0, y: 0 };
         this.isDragging = false;
+        
+        this.parent = this.canvas.parentElement;
 
-        // Inicialización
         this.init();
         this.animate();
         
-        // Event Listeners
         window.addEventListener('resize', () => this.resize());
         this.setupInteraction();
     }
@@ -38,30 +43,29 @@ class TextSphere {
     }
 
     resize() {
-        // Ajuste responsive: la esfera ocupa un % del menor lado de la pantalla
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        
+        this.canvas.width = this.parent.clientWidth;
+        this.canvas.height = this.parent.clientHeight;
         const minDim = Math.min(this.canvas.width, this.canvas.height);
-        this.radius = minDim * 0.15; // 35% del viewport
+        this.radius = minDim * 0.4; 
     }
 
-    /**
-     * Algoritmo de la Espiral de Fibonacci para distribución esférica uniforme.
-     * Complejidad: O(N)
-     */
     createPoints() {
-        const phi = Math.PI * (3 - Math.sqrt(5)); // Ángulo Áureo (aprox 2.3999 rad)
+        // Distribución Espiral de Fibonacci
+        // Fórmula: theta = 2 * PI * i / phi^2
+        const phi = Math.PI * (3 - Math.sqrt(5)); 
         const n = this.texts.length;
 
         this.points = this.texts.map((text, i) => {
-            const y = 1 - (i / (n - 1)) * 2; // y va de 1 a -1
-            const radiusAtY = Math.sqrt(1 - y * y); // Radio del círculo en altura y
-            const theta = phi * i; // Ángulo azimutal
+            const y = 1 - (i / (n - 1)) * 2; 
+            const radiusAtY = Math.sqrt(1 - y * y);
+            const theta = phi * i;
 
-            // Conversión de Esféricas a Cartesianas
             const x = Math.cos(theta) * radiusAtY;
             const z = Math.sin(theta) * radiusAtY;
+
+            // OPTIMIZACIÓN: Pre-cálculo de categoría
+            // Determinamos AHORA si es diseño, para no calcularlo en cada frame de animación
+            const isDesignItem = this.designSet.has(text);
 
             return {
                 x: x * this.radius,
@@ -69,76 +73,69 @@ class TextSphere {
                 z: z * this.radius,
                 text: text,
                 scale: 1,
-                alpha: 1
+                alpha: 1,
+                // Guardamos la bandera directamente en el objeto punto
+                isDesign: isDesignItem
             };
         });
     }
 
     setupInteraction() {
+        const getPos = (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        };
+
         const onDown = (e) => {
+            if(e.type === 'touchstart') e.preventDefault();
             this.isDragging = true;
-            this.lastMouse.x = e.clientX || e.touches[0].clientX;
-            this.lastMouse.y = e.clientY || e.touches[0].clientY;
-            // Detener inercia al agarrar
-            this.velocity.x = 0;
-            this.velocity.y = 0;
+            this.lastMouse = getPos(e);
+            this.velocity = { x: 0, y: 0 };
         };
 
         const onMove = (e) => {
             if (!this.isDragging) return;
-            
-            const x = e.clientX || e.touches[0].clientX;
-            const y = e.clientY || e.touches[0].clientY;
+            const curr = getPos(e);
+            const deltaX = curr.x - this.lastMouse.x;
+            const deltaY = curr.y - this.lastMouse.y;
 
-            const deltaX = x - this.lastMouse.x;
-            const deltaY = y - this.lastMouse.y;
+            this.velocity.y = deltaX * 0.0005; 
+            this.velocity.x = -deltaY * 0.0005;
 
-            // Actualizar rotación basada en el movimiento del mouse
-            // Invertimos direcciones para sensación natural de "trackball"
-            this.velocity.y = deltaX * 0.0001; 
-            this.velocity.x = -(deltaY * 0.0001);
-
-            this.lastMouse.x = x;
-            this.lastMouse.y = y;
+            this.lastMouse = curr;
         };
 
-        const onUp = () => {
-            this.isDragging = false;
-        };
+        const onUp = () => this.isDragging = false;
 
-        // Mouse events
         this.canvas.addEventListener('mousedown', onDown);
-        window.addEventListener('mousemove', onMove);
+        this.canvas.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
 
-        // Touch events (Responsive mobile)
         this.canvas.addEventListener('touchstart', onDown, { passive: false });
-        window.addEventListener('touchmove', onMove, { passive: false });
+        this.canvas.addEventListener('touchmove', onMove, { passive: false });
         window.addEventListener('touchend', onUp);
     }
 
-    /**
-     * Aplica matrices de rotación sobre los ejes X e Y
-     * Matriz de Rotación Básica (Euler)
-     */
     rotatePoints() {
-        // Aplicar inercia (fricción simulada)
         if (!this.isDragging) {
-            this.velocity.x *= 0.95; // Decaimiento (Friction)
-            this.velocity.y *= 0.95;
+            this.velocity.x *= 0.96;
+            this.velocity.y *= 0.96;
         }
 
-        const sinX = Math.sin(this.velocity.x * 20); // Multiplicador para sensibilidad
-        const cosX = Math.cos(this.velocity.x * 20);
-        const sinY = Math.sin(this.velocity.y * 20);
-        const cosY = Math.cos(this.velocity.y * 20);
+        // Matrices de rotación
+        const sinX = Math.sin(this.velocity.x * 10);
+        const cosX = Math.cos(this.velocity.x * 10);
+        const sinY = Math.sin(this.velocity.y * 10);
+        const cosY = Math.cos(this.velocity.y * 10);
 
         this.points.forEach(point => {
-            // Rotación eje Y
             const x1 = point.x * cosY - point.z * sinY;
             const z1 = point.z * cosY + point.x * sinY;
-
-            // Rotación eje X
             const y1 = point.y * cosX - z1 * sinX;
             const z2 = z1 * cosX + point.y * sinX;
 
@@ -149,47 +146,51 @@ class TextSphere {
     }
 
     draw() {
-        // Limpiar canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         const cx = this.canvas.width / 2;
         const cy = this.canvas.height / 2;
 
-        // Calcular proyección y escala para cada punto
+        // 1. Fase de proyección y cálculo de Alpha
         this.points.forEach(point => {
-            // Proyección de Perspectiva: scale = d / (d - z)
-            // Asumimos z negativo hacia la pantalla para la fórmula estándar, 
-            // pero aquí ajustamos: cuanto mayor Z, más cerca del espectador.
             const scale = this.perspective / (this.perspective - point.z);
             point.scale = scale;
-            
-            // Coordenadas 2D proyectadas
-            point.px = cx + point.x * scale;
+            point.px = cx - point.x * scale;
             point.py = cy + point.y * scale;
             
-            // Opacidad basada en profundidad (Fogging)
-            // Mapeamos Z de [-radius, radius] a Alpha [0.1, 1]
-            point.alpha = Math.max(0.1, Math.min(1, (point.z + this.radius) / (2 * this.radius) + 0.2));
+            // Normalización de profundidad para Alpha
+            point.alpha = (point.z + this.radius) / (2 * this.radius); 
+            point.alpha = Math.max(0.1, Math.min(1, point.alpha));
         });
 
-        // Algoritmo del Pintor (Painter's Algorithm): Ordenar por Z (profundidad)
-        // Dibujamos primero lo que está más lejos para que lo cercano se superponga correctamente.
+        // 2. Ordenamiento Z-Sort (Painter's Algorithm)
+        // Fundamental para que la opacidad funcione correctamente
         this.points.sort((a, b) => a.z - b.z);
 
-        // Renderizado
+        // 3. Fase de Renderizado
         this.points.forEach(point => {
             this.ctx.save();
             this.ctx.translate(point.px, point.py);
-            
-            // Escalado del contexto en lugar de cambiar font-size string (más eficiente)
             this.ctx.scale(point.scale, point.scale);
 
-            this.ctx.font = `bold ${this.baseSize}px Arial`;
+            this.ctx.font = `600 ${this.baseSize}px "Noto Sans Devanagari", sans-serif`;
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
             
-            // Color negro con transparencia
-            this.ctx.fillStyle = `rgba(0, 0, 0, ${point.alpha})`;
+            // --- LÓGICA DE COLOR OPTIMIZADA ---
+            let colorRGB;
+
+            if (point.isDesign) {
+                // Si es diseño, usamos su color específico (Naranja)
+                // Nota: Podrías hacer que brille diferente si está activo, 
+                // pero aquí mantenemos la identidad de color.
+                colorRGB = point.alpha > 0.85 ? this.designColor : this.textColor;
+            } else {
+                // Si es Tech, usamos la lógica original: Blanco -> Cyan si está cerca
+                colorRGB = point.alpha > 0.85 ? this.activeColor : this.textColor;
+            }
+
+            this.ctx.fillStyle = `rgba(${colorRGB}, ${point.alpha})`;
             
             this.ctx.fillText(point.text, 0, 0);
             this.ctx.restore();
@@ -203,15 +204,26 @@ class TextSphere {
     }
 }
 
-// Datos de entrada: Lenguajes de programación y tecnologías
+// --- Inicialización ---
 const dataSet = [
-    "Python", "JavaScript", "C++", "Java", "Rust", "Go", "TypeScript", 
-    "Swift", "Kotlin", "PHP", "Ruby", "C#", "Scala", "R", "Dart", 
-    "Lua", "Perl", "Haskell", "Julia", "Elixir", "C", "Assembly", 
-    "SQL", "NoSQL", "HTML5", "CSS3", "WebGL", "React", "Vue", "Angular",
-    "Node.js", "Django", "Flask", "Spring", "Docker", "K8s", "Git",
+    "Python", "AI", "C++", "Big Data", "Rust", "Go", "TypeScript", 
+    "Machine Learning", "Kotlin", "Cloud", "Security", "C#", "Scala", 
+    "Analytics", "DevOps", "Neural Nets", "Algorithm", "Haskell", "Julia", 
+    "Elixir", "C", "Performance", "SQL", "NoSQL", "Optimization", 
+    "Physics", "WebGL", "React", "Vue", "Angular", "Node.js", 
+    "Django", "Microservices", "Spring", "Docker", "K8s", "Git",
     "TensorFlow", "PyTorch", "Pandas", "NumPy", "Linux", "Bash", "Redis"
 ];
 
-// Iniciar la aplicación
-new TextSphere('canvas', dataSet);
+const datasetDG = [
+    "Adobe Photoshop", "Adobe Illustrator", "CorelDRAW", "Affinity Designer",
+    "Inkscape", "Canva", "Figma", "Procreate", "Clip Studio Paint", "Krita",
+    "GIMP", "Adobe Premiere Pro", "Final Cut Pro", "DaVinci Resolve",
+    "Adobe After Effects", "CapCut", "Blender", "Autodesk Maya",
+    "Autodesk 3ds Max", "Cinema 4D", "ZBrush", "SketchUp", "Houdini"
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Pasamos los arrays por separado al constructor
+    new TextSphere('canvas', dataSet, datasetDG);
+});
