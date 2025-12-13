@@ -125,36 +125,98 @@ Eres "Rubik", el asistente de la agencia de marketing y desarrollo "Neural Conne
         document.head.appendChild(style);
     }
 
-    injectHTML() {
+injectHTML() {
         const container = document.createElement('div');
-        container.className = 'nc-font antialiased fixed bottom-6 right-6 z-[10000]';
+        // Z-Index alto para asegurar que flote sobre todo
+        container.className = 'nc-font antialiased fixed z-[10000]'; 
+        
+        // LÓGICA RESPONSIVE EN TAILWIND:
+        // Móvil (default): bottom-0, right-0, w-full, h-full (Pantalla completa)
+        // Desktop (md:): bottom-20, right-6, w-[400px], h-[600px], rounded-2xl (Ventana flotante)
+        
         container.innerHTML = `
-            <button id="nc-toggle" class="w-14 h-14 bg-nc-primary text-white rounded-full shadow-xl hover:bg-nc-secondary transition-all flex items-center justify-center transform hover:scale-110 border-2 border-white">
+            <button id="nc-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-nc-primary text-white rounded-full shadow-xl hover:bg-nc-secondary transition-all flex items-center justify-center transform hover:scale-110 border-2 border-white z-[10001]">
                 <i class="fa-solid fa-robot text-2xl"></i>
             </button>
-            <div id="nc-modal" class="hidden absolute bottom-20 right-0 w-[350px] md:w-[400px] h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden nc-fade-in">
+
+            <div id="nc-modal" class="hidden fixed 
+                bottom-0 right-0 w-full h-full rounded-none
+                md:bottom-20 md:right-6 md:w-[400px] md:h-[600px] md:rounded-2xl 
+                bg-white shadow-2xl flex flex-col border border-slate-200 overflow-hidden nc-fade-in z-[10002]">
+                
                 <div class="bg-gradient-to-r from-nc-primary to-nc-secondary p-4 flex justify-between items-center text-white shrink-0 shadow-md">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><i class="fa-solid fa-brain text-white text-sm"></i></div>
-                        <div><span class="font-bold tracking-wide block text-sm">Neural Connection</span><span class="text-xs text-indigo-200">Rubik Online</span></div>
+                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-brain text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold tracking-wide block text-sm">Neural Connection</span>
+                            <span class="text-xs text-indigo-200">Rubik AI</span>
+                        </div>
                     </div>
-                    <button id="nc-close" class="hover:text-indigo-200"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    <button id="nc-close" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                        <i class="fa-solid fa-chevron-down md:hidden"></i> <i class="fa-solid fa-xmark hidden md:inline"></i> </button>
                 </div>
-                <div id="nc-chat-history" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50"></div>
+
+                <div id="nc-chat-history" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 touch-pan-y"></div>
+
                 <div id="nc-file-area" class="hidden px-4 py-3 bg-indigo-50 border-t border-indigo-100 flex justify-between items-center">
-                    <div class="flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-arrow-up text-nc-primary"></i><span id="nc-filename" class="text-xs text-indigo-800 font-medium truncate max-w-[200px]"></span></div>
-                    <button id="nc-clear-file" class="text-indigo-400 hover:text-red-500"><i class="fa-solid fa-circle-xmark"></i></button>
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i class="fa-solid fa-file-arrow-up text-nc-primary"></i>
+                        <span id="nc-filename" class="text-xs text-indigo-800 font-medium truncate max-w-[200px]"></span>
+                    </div>
+                    <button id="nc-clear-file" class="text-indigo-400 hover:text-red-500">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
                 </div>
-                <div class="p-3 bg-white border-t border-slate-100">
-                    <div class="flex items-end gap-2 bg-slate-100 p-2 rounded-2xl border border-slate-200 focus-within:border-nc-primary">
+
+                <div class="p-3 bg-white border-t border-slate-100 pb-safe"> <div class="flex items-end gap-2 bg-slate-100 p-2 rounded-2xl border border-slate-200 focus-within:border-nc-primary transition-colors">
                         <input type="file" id="nc-file-input" class="hidden" accept="image/*,.pdf,.doc,.txt">
-                        <button id="nc-attach-btn" class="p-2 text-slate-400 hover:text-nc-primary h-10 w-10 shrink-0"><i class="fa-solid fa-paperclip"></i></button>
-                        <textarea id="nc-input" rows="1" placeholder="Escribe tu mensaje..." class="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-700 resize-none py-2.5 max-h-24 overflow-y-auto"></textarea>
-                        <button id="nc-send-btn" class="p-2 bg-nc-primary text-white rounded-xl hover:bg-nc-secondary h-10 w-10 shrink-0 flex items-center justify-center"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+                        <button id="nc-attach-btn" class="p-2 text-slate-400 hover:text-nc-primary h-10 w-10 shrink-0">
+                            <i class="fa-solid fa-paperclip"></i>
+                        </button>
+                        <textarea id="nc-input" rows="1" placeholder="Escribe aquí..." class="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-700 resize-none py-2.5 max-h-24 overflow-y-auto"></textarea>
+                        <button id="nc-send-btn" class="p-2 bg-nc-primary text-white rounded-xl hover:bg-nc-secondary h-10 w-10 shrink-0 flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-paper-plane text-sm"></i>
+                        </button>
                     </div>
                 </div>
             </div>`;
         document.body.appendChild(container);
+    }
+
+    // ADICIONAL: Manejo de error de conexión para "Cualquier Equipo"
+    async getOllamaResponse(userMsg) {
+        // ... (código anterior de historial) ...
+        this.state.history.push({ role: "user", content: userMsg });
+        
+        /* NOTA DE EXPERTO: 
+           localhost:11434 solo funciona si el usuario está en la MISMA máquina que corre Ollama.
+           Para que funcione en el celular, debes cambiar baseUrl por la IP local de tu PC (ej: 192.168.1.5:11434)
+           o usar un túnel como Ngrok.
+        */
+        
+        try {
+            // ... (fetch logic) ...
+            const response = await fetch(`${this.config.ollama.baseUrl}/api/chat`, {
+                // ... (headers y body) ...
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: this.config.ollama.model,
+                    messages: [{ role: "system", content: this.rubikPersona }, ...this.state.history],
+                    stream: false
+                })
+            });
+            // ... (procesamiento respuesta) ...
+            const data = await response.json();
+            return data.message.content;
+
+        } catch (error) {
+            console.error("Connection Error:", error);
+            // Fallback elegante si no hay conexión con el servidor IA
+            return "⚠️ **Modo Desconectado**: No puedo conectar con mi cerebro neuronal (Ollama) en este dispositivo. Si estás en móvil, asegúrate de que el servidor use una IP pública o Ngrok.";
+        }
     }
 
     cacheDOM() {
@@ -344,15 +406,26 @@ Eres "Rubik", el asistente de la agencia de marketing y desarrollo "Neural Conne
     }
 
     async sendEmails(summary, file, userEmail, originalMsg) {
+       
+        
+        // 1. Convertir archivo a Base64 (Esto es CRÍTICO)
         let contentData = null;
-        if (file) contentData = await this.toBase64(file);
+        if (file) {
+            try {
+                // Esta función toBase64 debe devolver algo como "data:image/png;base64,iVBORw0KGgo..."
+                contentData = await this.toBase64(file); 
+            } catch (e) {
+                console.error("Error al procesar archivo:", e);
+            }
+        }
+
 
         const baseParams = {
             summary_html: summary,
             user_email: userEmail,
             message: originalMsg,
             file_name: file ? file.name : "Sin archivo",
-            content: contentData,
+            content: contentData, // <--- Aquí va el archivo codificado
             from_name: "Neural AI (Rubik)"
         };
 

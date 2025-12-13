@@ -43,6 +43,8 @@ body {
 .hero {
     position: relative;
     min-height: 100vh;
+    height: auto;
+    padding-top: 80px; /* Espacio para el header fixed */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,14 +55,31 @@ body {
 }
 
 .hero-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            max-width: 1200px;
-            width: 100%;
-            align-items: center;
-            z-index: 10;
-            gap: 2rem;
-        }
+
+    display: grid;
+    /* Cambio de lógica: 1 columna en móvil, 2 en desktop */
+    grid-template-columns: 1fr; 
+    gap: 2rem;
+    max-width: 1200px;
+    width: 90%; /* Margen lateral de seguridad */
+    margin: 0 auto;
+
+
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr; */
+    /* max-width: 1200px; */
+    /* width: 100%; */
+    align-items: center;
+    z-index: 10;
+    gap: 2rem;
+}
+
+@media (min-width: 968px) {
+    .hero-container {
+        grid-template-columns: 1fr 1fr; /* Retorna a 2 columnas en pantallas grandes */
+        text-align: left;
+    }
+}
 
 /* Columna de Texto */
 .content-text {
@@ -112,10 +131,16 @@ body {
 
 /* Columna Esfera */
 .sphere-wrapper {
-    position: relative;
-    width: 100%;
-    height: 600px;
+
+     width: 100%;
+    height: 50vh; /* Altura relativa al viewport, no pixeles fijos */
+    min-height: 300px;
+    max-height: 600px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
     justify-content: center;
     align-items: center;
 }
@@ -200,8 +225,11 @@ header {
 
 
 .navbar {
+    flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
+    justify-content: space-between;
+    padding: 1rem 5%;
     margin: auto;
-    padding: 10px;
+    /* padding: 10px; */
     display: flex;
     align-items: center;  
     justify-content: space-around;
@@ -222,6 +250,10 @@ header {
   list-style: none;
   display: flex;
   gap: 1.2rem;
+
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center; /* Centrado en móviles */
 
 }
 .nav-links a {
@@ -557,10 +589,14 @@ header {
 
 
 .footer {
-  height: 60vh;
-  background-color: #0b0b3b;
-  padding: 2rem 2rem 0 2rem;
-  color: #ccc;
+  height: auto; /* IMPORTANTE: Dejar que el contenido defina la altura */
+    min-height: 40vh;
+    padding: 3rem 1rem;
+    background-color: #0b0b3b;
+    color: #ccc;
+
+  /* height: 60vh; */
+  /* padding: 2rem 2rem 0 2rem; */
 }
 
 .footer-top {
@@ -637,11 +673,30 @@ header {
 
 
 .footer-content {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 2rem;
+    display: grid;
+    /* Grid automático: crea tantas columnas como quepan de mínimo 200px */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 2rem;
+    margin-top: 2rem;
+    text-align: left;
+
+
+  /* display: grid; */
+  /* grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;  */
+  /* gap: 1.5rem; */
+  /* margin-top: 2rem; */
 }
+
+/* Ajustes para móviles específicos */
+@media (max-width: 768px) {
+    .headline { font-size: 2.5rem; }
+    .nav-links { display: none; } /* Sugerencia: Aquí deberías implementar un menú hamburguesa */
+    .btn { display: none; } /* Ocultar botón en header móvil si no hay espacio */
+    .footer-content { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+
+    /* Mostrar menú simplificado o icono aquí */
+}
+
 
 .footer-col h3 {
   color: #292b7b;
