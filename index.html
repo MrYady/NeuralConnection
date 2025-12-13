@@ -24,7 +24,7 @@
     </div>
   </section> -->
 
-  <section class="hero">
+  <section id="inicio" class="hero">
         <div class="hero-container">
             <div class="content-text">
                 <span class="tagline">Innovación Digital</span>
@@ -41,11 +41,11 @@
     </section>
   <!-- Header -->
   <header>
-    <nav class="navbar">
+    <nav id="nav" class="navbar">
       <div class="logo"><a href="index.html"><img src="state/imgs/Recurso 13.png" alt=""></a></div>
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#nav">Nosotros</a></li>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="state/template/render.html">Portafolio</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
@@ -235,25 +235,13 @@
 
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer id="contacto" class="footer">
     <div class="footer-top">
       <div class="footer-logo">
         <img class="icono-footer" src="state/imgs/Recurso 21.png" alt="Neural Connection" />
         <img class="titulo-footer" src="state/imgs/Recurso 13.png" alt="">
       </div>
-      <div class="footer-subscribe">
-        <div class="subcipcion">
-          <input type="email" placeholder="Your E-mail" />
-          <ul class="metodosP">
-            <li><a href=""><i class="fa-brands fa-cc-visa"></i></a></li>
-            <li><a href=""><i class="fa-brands fa-cc-paypal"></i></a></li>
-            <li><a href=""><i class="fa-brands fa-cc-mastercard"></i></a></li>
-            <li><a href=""><i class="fa-brands fa-cc-apple-pay"></i></a></li>
-            <li><a href=""><i class="fa-solid fa-credit-card"></i></a></li>
-          </ul>
-        </div>
-        <button type="submit">suscribirse</button>
-      </div>
+      
     </div>
 
     <div class="footer-content">
@@ -302,9 +290,8 @@
 
     <div class="footer-bottom">
       <div class="footer-links">
-        <a href="#">privacy</a> |
-        <a href="#">terms of use</a> |
-        <a href="#">site map</a>
+        <a href="state/template/privacy.html">privacy</a> |
+        <a href="state/template/siteMap.html">site map</a>
       </div>
       <div>
         <p>Copyright © 2025 - Neural Connection | todos derechos reservados</p>
@@ -312,7 +299,7 @@
     </div>
   </footer>
 
-  <script src="state/scripts/sketchSphere.js"></script>
-  <script src="state/scripts/entidades.js"></script>
-  <script src="state/scripts/chatbot.js"></script>
+  <script src="state/scripts/sketchSphere.js" defer></script>
+  <script src="state/scripts/entidades.js" defer></script>
+  <script src="state/scripts/chatbot.js" defer></script>
   </body>
