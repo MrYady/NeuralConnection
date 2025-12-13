@@ -33,6 +33,9 @@ class TextSphere {
         this.init();
         this.animate();
         
+
+        
+
         window.addEventListener('resize', () => this.resize());
         this.setupInteraction();
     }

@@ -1,346 +1,402 @@
 /**
- * NEURAL CONNECTION - CHATBOT MODULE
- * Versión: 4.0 (File Upload & Email Support)
- * Estilo: Clean Modern UI
+ * NEURAL CONNECTION - CHATBOT KERNEL v7.0 (OLLAMA EDITION)
+ * Engine: Ollama (Llama 3 / Mistral / Gemma)
+ * Protocol: HTTP REST API
  */
 
 class NeuralChatbot {
     constructor() {
-        // --- CONFIGURACIÓN ---
-        this.geminiKey = "AIzaSyA8HBCEIvtvFHMOJXUORVTpdjajgAouHJ4"; // API Key de Google Gemini
-        this.modelName = "gemini-2.5-flash-preview-09-2025"; // Modelo Gemini a utilizar
-        
-        // CONFIGURACIÓN EMAILJS (Reemplaza con tus datos reales de emailjs.com)
-        this.emailServiceId = "service_5y67cyg"; 
-        this.emailTemplateId = "template_4iv0ipp"; 
-        this.emailPublicKey = "WVK1rWNWFHXTdZu3K"; 
-        
-        this.chatHistory = [];
-        this.isOpen = false;
-        this.currentFile = null; // Almacena el archivo temporalmente
-        
-        this.elements = {};
+        // --- CONFIGURACIÓN OLLAMA ---
+        this.config = {
+            ollama: {
+                // URL de tu servidor Ollama. 
+                // Si es local: "http://localhost:11434"
+                // Si usas Ngrok o VPS: "https://tu-servidor.com"
+                baseUrl: "http://localhost:11434", 
+                
+                // Nombre exacto del modelo que descargaste (ej: "llama3", "mistral", "gemma:2b")
+                model: "llama3.2", 
+                
+                // Tu API KEY (Si tu servidor tiene autenticación, sino déjalo vacío)
+                apiKey: "2284d9dcb7e94b2091cbdc804dcb3ae3.EEu-wihQ3KNj_ydh7m3w5HM6" 
+            },
+            email: {
+                serviceId: "service_5y67cyg",
+                templateId: "template_4iv0ipp",
+                publicKey: "E8FXxIMj8tOcON4Gz"
+            }
+        };
+
+        // --- PERSONALIDAD RUBIK ---
+        this.rubikPersona = `
+Eres "Rubik", el asistente de la agencia de marketing y desarrollo "Neural Connection".
+            Somos expertos en desarrollo y estrategias de marketing digital.
+            Responde de forma breve, amable y profesional.
+
+            TUS SERVICIOS CLAVE:
+            - Diseño y desarrollo web (React, Node.js, Python).
+            - Diseño UX/UI (Figma, Adobe XD).
+            - Apps móviles (Flutter, React Native).
+            - Integración de IA (GPT-4, Gemini).
+            - Marketing Digital (SEO, SEM, Redes Sociales).
+            - Análisis de datos (Google Analytics).
+            - Soporte y mantenimiento.
+
+            DIRECTRICES:
+            1. Sé conciso y directo.
+            2. Usa tono profesional pero accesible.
+            3. Si compartes enlaces, OCÚLTALOS en el texto (ej: [Instagram](url)) para que se vean limpios.
+            
+            DATOS DE CONTACTO (Úsalos solo si preguntan):
+            - Web: https://neuralconnection.net
+            - Email: neuralconnection@neuralconnection.net
+            - Tel: 849-503-1616
+            - Redes: Instagram (neural_connection_rd), LinkedIn (neural-connection).
+            
+            UBICACIÓN: Santo Domingo, RD. Horario: L-V 9AM-6PM.
+        `;
+
+        // --- ESTADO ---
+        this.state = {
+            isOpen: false,
+            currentFile: null,
+            awaitingEmail: false,
+            userEmail: null,
+            history: [], // Historial manual para Ollama
+            isProcessing: false
+        };
+
+        this.dom = {};
         this.init();
     }
 
     async init() {
-        console.log("⚡ Iniciando Neural Assistant con Soporte de Archivos...");
+        console.log("🦙 Rubik (Ollama Engine) Initializing...");
         await this.injectDependencies();
         this.injectStyles();
         this.injectHTML();
+        this.cacheDOM();
         this.bindEvents();
         
-        // Inicializar EmailJS
-        if (window.emailjs) emailjs.init(this.emailPublicKey);
+        if (window.emailjs) emailjs.init(this.config.email.publicKey);
 
-        this.addMessageToUI("Hola, soy tu Asistente Neural. Puedes hacerme preguntas o enviarme documentos/imágenes usando el clip 📎.", 'bot');
+        // Mensaje de bienvenida
+        this.addSystemMessage("Hola. Soy **Rubik**, tu asistente en *Neural Connection*. ¿En qué puedo ayudarte hoy?");
     }
 
+    // --- DEPENDENCIAS Y ESTILOS (Igual que antes) ---
     async injectDependencies() {
-        window.tailwind = {
-            config: {
-                corePlugins: { preflight: false },
-                theme: {
-                    extend: {
-                        colors: {
-                            'nc-header': '#2a2a72',
-                            'nc-user-start': '#00c6ff',
-                            'nc-user-end': '#0072ff',
-                        }
-                    }
-                }
-            }
-        };
-
-        const loadScript = (src) => new Promise((resolve) => {
+        const libs = [
+            "https://cdn.tailwindcss.com",
+            "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
+            "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+        ];
+        await Promise.all(libs.map(src => new Promise(resolve => {
             if (document.querySelector(`script[src="${src}"]`)) return resolve();
             const script = document.createElement('script');
             script.src = src;
             script.onload = resolve;
             document.head.appendChild(script);
-        });
+        })));
 
-        const loadCSS = (href) => {
-            if (document.querySelector(`link[href="${href}"]`)) return;
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = href;
-            document.head.appendChild(link);
+        window.tailwind.config = {
+            theme: { extend: { colors: { 'nc-primary': '#4F46E5', 'nc-secondary': '#4338ca', 'nc-text': '#1e293b' } } }
         };
 
-        await Promise.all([
-            loadScript("https://cdn.tailwindcss.com"),
-            loadScript("https://cdn.jsdelivr.net/npm/marked/marked.min.js"),
-            loadScript("https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js") // Librería Email
-        ]);
-
-        loadCSS("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css");
-        loadCSS("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+        const cssLinks = ["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css", "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"];
+        cssLinks.forEach(href => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet'; link.href = href; document.head.appendChild(link);
+        });
     }
 
     injectStyles() {
         const style = document.createElement('style');
         style.textContent = `
-            .nc-font { font-family: 'Montserrat', sans-serif; }
-            #nc-chat-history::-webkit-scrollbar { width: 4px; }
-            #nc-chat-history::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-            @keyframes nc-pop-in { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-            .nc-animate-enter { animation: nc-pop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-            .bot-shadow { box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-            
-            /* Animación de carga de archivo */
-            .file-pulse { animation: pulse-border 1.5s infinite; }
-            @keyframes pulse-border { 0% { border-color: #00c6ff; } 50% { border-color: transparent; } 100% { border-color: #00c6ff; } }
+            .nc-font { font-family: 'Inter', sans-serif; }
+            #nc-chat-history::-webkit-scrollbar { width: 5px; }
+            #nc-chat-history::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+            .nc-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .nc-message-bubble { overflow-wrap: anywhere; word-break: break-word; }
+            .nc-message-bubble a { color: #4F46E5; font-weight: 600; text-decoration: underline; }
+            .nc-user-msg a { color: white; }
         `;
         document.head.appendChild(style);
     }
 
     injectHTML() {
         const container = document.createElement('div');
-        container.id = 'neural-chatbot-container';
-        container.className = 'nc-font antialiased'; 
-        
+        container.className = 'nc-font antialiased fixed bottom-6 right-6 z-[10000]';
         container.innerHTML = `
-            <div class="fixed bottom-6 right-6 z-[9999]">
-                <button id="nc-toggle-btn"
-                    class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center cursor-pointer border-2 border-white">
-                    <i class="fa-solid fa-message text-2xl"></i>
-                </button>
-            </div>
-
-            <div id="nc-chat-modal"
-                class="fixed bottom-24 right-6 w-80 md:w-[350px] h-[550px] bg-[#f8f9fa] rounded-[2rem] shadow-2xl z-[9999] hidden flex-col overflow-hidden nc-animate-enter border border-gray-200">
-                
-                <div class="bg-nc-header p-4 flex justify-between items-center text-white shrink-0">
-                    <button id="nc-close-btn" class="text-white/80 hover:text-white transition cursor-pointer bg-transparent border-0"><i class="fa-solid fa-arrow-left"></i></button>
-                    <span class="font-bold text-lg tracking-wide">Neural AI</span>
-                    <button class="text-white/80"><i class="fa-solid fa-gear"></i></button>
-                </div>
-
-                <div id="nc-chat-history" class="flex-1 overflow-y-auto p-5 space-y-4 bg-[#f8f9fa]">
-                    <div class="flex justify-center mb-4"><span class="bg-gray-200/60 text-gray-500 text-xs px-3 py-1 rounded-full font-medium">Hoy</span></div>
-                </div>
-
-                <div id="nc-file-preview-area" class="hidden px-4 py-2 bg-gray-100 border-t border-gray-200 flex items-center justify-between">
-                    <div class="flex items-center gap-2 overflow-hidden">
-                        <i class="fa-solid fa-file-image text-nc-user-end"></i>
-                        <span id="nc-filename" class="text-xs text-gray-600 truncate max-w-[150px]">archivo.jpg</span>
+            <button id="nc-toggle" class="w-14 h-14 bg-nc-primary text-white rounded-full shadow-xl hover:bg-nc-secondary transition-all flex items-center justify-center transform hover:scale-110 border-2 border-white">
+                <i class="fa-solid fa-robot text-2xl"></i>
+            </button>
+            <div id="nc-modal" class="hidden absolute bottom-20 right-0 w-[350px] md:w-[400px] h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden nc-fade-in">
+                <div class="bg-gradient-to-r from-nc-primary to-nc-secondary p-4 flex justify-between items-center text-white shrink-0 shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><i class="fa-solid fa-brain text-white text-sm"></i></div>
+                        <div><span class="font-bold tracking-wide block text-sm">Neural Connection</span><span class="text-xs text-indigo-200">Rubik Online</span></div>
                     </div>
-                    <button id="nc-remove-file" class="text-red-500 hover:text-red-700 text-xs cursor-pointer"><i class="fa-solid fa-times"></i></button>
+                    <button id="nc-close" class="hover:text-indigo-200"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
-
-                <div class="p-4 bg-white flex items-center gap-2 shrink-0 relative">
-                    <input type="file" id="nc-file-upload" class="hidden" accept="image/*,.pdf,.doc,.docx">
-                    
-                    <button id="nc-attach-btn" class="text-gray-400 hover:text-nc-user-end transition p-2 cursor-pointer" title="Adjuntar archivo">
-                        <i class="fa-solid fa-paperclip text-lg"></i>
-                    </button>
-
-                    <div class="flex-1 bg-transparent">
-                        <input type="text" id="nc-chat-input" placeholder="Escribe un mensaje..."
-                            class="w-full bg-transparent border-none outline-none text-gray-600 text-sm placeholder-gray-400 font-medium h-10">
+                <div id="nc-chat-history" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50"></div>
+                <div id="nc-file-area" class="hidden px-4 py-3 bg-indigo-50 border-t border-indigo-100 flex justify-between items-center">
+                    <div class="flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-arrow-up text-nc-primary"></i><span id="nc-filename" class="text-xs text-indigo-800 font-medium truncate max-w-[200px]"></span></div>
+                    <button id="nc-clear-file" class="text-indigo-400 hover:text-red-500"><i class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+                <div class="p-3 bg-white border-t border-slate-100">
+                    <div class="flex items-end gap-2 bg-slate-100 p-2 rounded-2xl border border-slate-200 focus-within:border-nc-primary">
+                        <input type="file" id="nc-file-input" class="hidden" accept="image/*,.pdf,.doc,.txt">
+                        <button id="nc-attach-btn" class="p-2 text-slate-400 hover:text-nc-primary h-10 w-10 shrink-0"><i class="fa-solid fa-paperclip"></i></button>
+                        <textarea id="nc-input" rows="1" placeholder="Escribe tu mensaje..." class="w-full bg-transparent border-none focus:ring-0 text-sm text-slate-700 resize-none py-2.5 max-h-24 overflow-y-auto"></textarea>
+                        <button id="nc-send-btn" class="p-2 bg-nc-primary text-white rounded-xl hover:bg-nc-secondary h-10 w-10 shrink-0 flex items-center justify-center"><i class="fa-solid fa-paper-plane text-sm"></i></button>
                     </div>
-                    
-                    <button id="nc-send-btn"
-                        class="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-md text-[#4facfe] flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer group">
-                        <i class="fa-regular fa-paper-plane group-hover:scale-110 transition-transform text-lg"></i>
-                    </button>
                 </div>
-            </div>
-        `;
-
+            </div>`;
         document.body.appendChild(container);
+    }
 
-        this.elements = {
-            toggleBtn: document.getElementById('nc-toggle-btn'),
-            modal: document.getElementById('nc-chat-modal'),
-            closeBtn: document.getElementById('nc-close-btn'),
-            input: document.getElementById('nc-chat-input'),
-            sendBtn: document.getElementById('nc-send-btn'),
-            history: document.getElementById('nc-chat-history'),
-            attachBtn: document.getElementById('nc-attach-btn'),
-            fileInput: document.getElementById('nc-file-upload'),
-            previewArea: document.getElementById('nc-file-preview-area'),
-            fileNameSpan: document.getElementById('nc-filename'),
-            removeFileBtn: document.getElementById('nc-remove-file')
-        };
+    cacheDOM() {
+        const ids = ['nc-toggle', 'nc-modal', 'nc-close', 'nc-chat-history', 'nc-file-area', 'nc-filename', 'nc-clear-file', 'nc-file-input', 'nc-attach-btn', 'nc-input', 'nc-send-btn'];
+        ids.forEach(id => this.dom[id] = document.getElementById(id));
     }
 
     bindEvents() {
-        const { toggleBtn, closeBtn, sendBtn, input, attachBtn, fileInput, removeFileBtn } = this.elements;
-
-        toggleBtn.addEventListener('click', () => this.toggleChat());
-        closeBtn.addEventListener('click', () => this.toggleChat(false));
-        sendBtn.addEventListener('click', () => this.handleSend());
-        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.handleSend(); });
-
-        // Lógica de Archivos
-        attachBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => this.handleFileSelection(e));
-        removeFileBtn.addEventListener('click', () => this.clearFile());
+        this.dom['nc-toggle'].addEventListener('click', () => this.toggleChat());
+        this.dom['nc-close'].addEventListener('click', () => this.toggleChat(false));
+        this.dom['nc-attach-btn'].addEventListener('click', () => this.dom['nc-file-input'].click());
+        this.dom['nc-file-input'].addEventListener('change', (e) => this.handleFileSelect(e));
+        this.dom['nc-clear-file'].addEventListener('click', () => this.clearFile());
+        this.dom['nc-send-btn'].addEventListener('click', () => this.processUserAction());
+        this.dom['nc-input'].addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.processUserAction(); } });
     }
 
-    toggleChat(forceState) {
-        this.isOpen = forceState !== undefined ? forceState : !this.isOpen;
-        const { modal, input } = this.elements;
-        if (this.isOpen) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => input.focus(), 100);
-        } else {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
+    toggleChat(force) {
+        this.state.isOpen = force !== undefined ? force : !this.state.isOpen;
+        this.dom['nc-modal'].classList.toggle('hidden', !this.state.isOpen);
+        if (this.state.isOpen) { this.dom['nc-input'].focus(); this.scrollToBottom(); }
     }
 
-    // --- MANEJO DE ARCHIVOS ---
-    handleFileSelection(e) {
+    handleFileSelect(e) {
         const file = e.target.files[0];
         if (!file) return;
-
-        // Validar tamaño (Max 2MB para EmailJS free tier)
-        if (file.size > 2 * 1024 * 1024) {
-            alert("El archivo es demasiado grande (Máx 2MB).");
-            this.clearFile();
-            return;
-        }
-
-        this.currentFile = file;
-        this.elements.previewArea.classList.remove('hidden');
-        this.elements.fileNameSpan.textContent = file.name;
-        
-        // Efecto visual en el botón de clip
-        this.elements.attachBtn.classList.add('text-nc-user-end');
+        if (file.size > 3 * 1024 * 1024) { alert("Archivo máximo 3MB."); return; }
+        this.state.currentFile = file;
+        this.dom['nc-filename'].textContent = `${file.name}`;
+        this.dom['nc-file-area'].classList.remove('hidden');
     }
 
     clearFile() {
-        this.currentFile = null;
-        this.elements.fileInput.value = "";
-        this.elements.previewArea.classList.add('hidden');
-        this.elements.attachBtn.classList.remove('text-nc-user-end');
+        this.state.currentFile = null;
+        this.dom['nc-file-input'].value = "";
+        this.dom['nc-file-area'].classList.add('hidden');
     }
 
-    // --- LÓGICA DE ENVÍO ---
-    async handleSend() {
-        const { input } = this.elements;
-        const msg = input.value.trim();
+    // --- LÓGICA PRINCIPAL ---
+    async processUserAction() {
+        const text = this.dom['nc-input'].value.trim();
+        if ((!text && !this.state.currentFile) || this.state.isProcessing) return;
 
-        // Evitar enviar si no hay mensaje NI archivo
-        if (!msg && !this.currentFile) return;
+        this.addMessageToUI(text, 'user', this.state.currentFile);
+        this.dom['nc-input'].value = '';
+        const fileToSend = this.state.currentFile;
+        const textToSend = text;
+        this.clearFile();
 
-        // 1. Mostrar Mensaje Usuario en UI
-        let userDisplayMsg = msg;
-        if (this.currentFile) {
-            userDisplayMsg = `${msg ? msg + '<br>' : ''} <span class="text-xs opacity-75"><i class="fa-solid fa-paperclip"></i> ${this.currentFile.name}</span>`;
-        }
-        this.addMessageToUI(userDisplayMsg, 'user');
-        
-        // Limpiar Inputs visualmente
-        input.value = '';
-        const fileToSend = this.currentFile; 
-        this.clearFile(); // Limpiar estado interno pero guardar referencia local
-
-        // 2. Loading State
-        const loadingId = this.addMessageToUI('...', 'bot', true);
+        this.state.isProcessing = true;
+        const loadingId = this.addLoadingIndicator();
 
         try {
-            // DECISIÓN: ¿Enviar Email o Chatear con IA?
-            if (fileToSend) {
-                // CASO A: Hay archivo -> ENVIAR CORREO
-                await this.sendEmail(msg, fileToSend);
-                this.removeMessage(loadingId);
-                this.addMessageToUI(`✅ He enviado tu archivo "<b>${fileToSend.name}</b>" y tu mensaje al equipo de Neural Connection. Te responderemos por correo pronto.`, 'bot');
-            } else {
-                // CASO B: Solo Texto -> CHATEAR CON GEMINI
-                const aiResponse = await this.getGeminiResponse(msg);
-                this.removeMessage(loadingId);
-                this.addMessageToUI(aiResponse, 'bot');
+            if (this.state.awaitingEmail) {
+                await this.handleEmailCapture(textToSend, loadingId);
+                return;
             }
 
+            if (fileToSend) {
+                if (!this.state.userEmail) {
+                    this.state.pendingFile = fileToSend;
+                    this.state.pendingText = textToSend;
+                    this.removeMessage(loadingId);
+                    this.addSystemMessage("He recibido tu archivo. Para analizarlo, **necesito tu correo electrónico**.");
+                    this.state.awaitingEmail = true;
+                    this.state.isProcessing = false;
+                    return;
+                } else {
+                    await this.executeFullTransaction(textToSend, fileToSend, this.state.userEmail, loadingId);
+                }
+            } else {
+                const aiResponse = await this.getOllamaResponse(textToSend);
+                this.removeMessage(loadingId);
+                this.addSystemMessage(aiResponse);
+            }
         } catch (error) {
             console.error(error);
             this.removeMessage(loadingId);
-            this.addMessageToUI("Lo siento, hubo un error técnico. Intenta de nuevo.", 'bot');
+            this.addSystemMessage("⚠️ Error conectando con el servidor neuronal (Ollama). Verifica que el servicio esté activo.");
+        } finally {
+            this.state.isProcessing = false;
         }
     }
 
-    // --- SERVICIO DE EMAIL ---
-    async sendEmail(message, file) {
-        if (!this.emailPublicKey || this.emailPublicKey === "public_key_aqui") {
-            return new Promise(r => setTimeout(r, 1000)); // Simulación si no hay key
+    // --- CONEXIÓN OLLAMA (API REQUEST) ---
+    async getOllamaResponse(userMsg) {
+        // 1. Añadir mensaje actual al historial
+        this.state.history.push({ role: "user", content: userMsg });
+
+        const endpoint = `${this.config.ollama.baseUrl}/api/chat`;
+        
+        // 2. Construir los mensajes incluyendo el sistema
+        const messagesPayload = [
+            { role: "system", content: this.rubikPersona },
+            ...this.state.history
+        ];
+
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Solo enviamos Auth si hay API Key configurada
+                    ...(this.config.ollama.apiKey ? { "Authorization": `Bearer ${this.config.ollama.apiKey}` } : {})
+                },
+                body: JSON.stringify({
+                    model: this.config.ollama.model,
+                    messages: messagesPayload,
+                    stream: false // Importante: false para recibir respuesta completa de una vez
+                })
+            });
+
+            if (!response.ok) throw new Error(`Ollama API Error: ${response.statusText}`);
+
+            const data = await response.json();
+            const botReply = data.message.content;
+
+            // 3. Guardar respuesta del bot en historial
+            this.state.history.push({ role: "assistant", content: botReply });
+
+            return botReply;
+
+        } catch (error) {
+            console.error("Fallo en Ollama:", error);
+            return "Lo siento, mi conexión neuronal con el servidor local ha fallado. Verifica la consola.";
         }
+    }
 
-        // Convertir archivo a Base64
-        const base64File = await this.toBase64(file);
+    async generateExecutiveSummary(lastUserMsg) {
+        // Petición "Single Shot" para el resumen
+        const endpoint = `${this.config.ollama.baseUrl}/api/chat`;
+        const prompt = `
+            Actúa como Analista de Negocios. Resume este mensaje: "${lastUserMsg}".
+            Formato: HTML simple (<ul>, <b>). Puntos clave: Intención, Servicios sugeridos, Urgencia.
+        `;
 
-        // Parámetros para EmailJS (Deben coincidir con tu Template)
-        const templateParams = {
-            message: message || "Archivo adjunto enviado.",
-            file_name: file.name,
-            content: base64File // Necesitas configurar el template para aceptar adjuntos o links
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(this.config.ollama.apiKey ? { "Authorization": `Bearer ${this.config.ollama.apiKey}` } : {})
+                },
+                body: JSON.stringify({
+                    model: this.config.ollama.model,
+                    messages: [{ role: "user", content: prompt }],
+                    stream: false
+                })
+            });
+            const data = await response.json();
+            return data.message.content;
+        } catch (e) {
+            return "<p>No se pudo generar el resumen automático.</p>";
+        }
+    }
+
+    // --- RESTO DE FUNCIONES (Email, UI) ---
+    async handleEmailCapture(emailText, loadingId) {
+        const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+        const match = emailText.match(emailRegex);
+        if (match) {
+            this.state.userEmail = match[0];
+            this.state.awaitingEmail = false;
+            this.removeMessage(loadingId);
+            const newLoading = this.addLoadingIndicator();
+            this.addSystemMessage(`¡Gracias! Procesando para **${this.state.userEmail}**...`);
+            const file = this.state.pendingFile;
+            const text = this.state.pendingText || "Envío de archivo.";
+            await this.executeFullTransaction(text, file, this.state.userEmail, newLoading);
+        } else {
+            this.removeMessage(loadingId);
+            this.addSystemMessage("Correo inválido. Inténtalo de nuevo.");
+            this.state.isProcessing = false;
+        }
+    }
+
+    async executeFullTransaction(msg, file, email, loadingId) {
+        try {
+            const summary = await this.generateExecutiveSummary(msg);
+            await this.sendEmails(summary, file, email, msg);
+            this.removeMessage(loadingId);
+            this.addSystemMessage(`✅ **Listo.** Archivo enviado y resumen mandado a ${email}.`);
+        } catch (err) {
+            this.removeMessage(loadingId);
+            this.addSystemMessage("Error enviando el correo.");
+        }
+    }
+
+    async sendEmails(summary, file, userEmail, originalMsg) {
+        let contentData = null;
+        if (file) contentData = await this.toBase64(file);
+
+        const baseParams = {
+            summary_html: summary,
+            user_email: userEmail,
+            message: originalMsg,
+            file_name: file ? file.name : "Sin archivo",
+            content: contentData,
+            from_name: "Neural AI (Rubik)"
         };
 
-        return emailjs.send(this.emailServiceId, this.emailTemplateId, templateParams);
-    }
-
-    // --- SERVICIO DE IA ---
-    async getGeminiResponse(msg) {
-        const { GoogleGenerativeAI } = await import("https://esm.run/@google/generative-ai");
-        const genAI = new GoogleGenerativeAI(this.geminiKey);
-        const model = genAI.getGenerativeModel({ model: this.modelName });
+        const adminEmail = "neuralconnection@neuralconnection.net"; 
         
-        const prompt = `Actúa como Asistente de Neural Connection. Usuario: "${msg}". Responde brevemente.`;
-        const result = await model.generateContent(prompt);
-        return result.response.text();
-    }
+        await emailjs.send(this.config.email.serviceId, this.config.email.templateId, {
+            ...baseParams, to_email: adminEmail, to_name: "Admin", subject: `🔔 Nuevo Lead: ${userEmail}`
+        });
 
-    // --- UTILIDADES ---
-    toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+        await emailjs.send(this.config.email.serviceId, this.config.email.templateId, {
+            ...baseParams, to_email: userEmail, to_name: "Cliente", subject: "Hemos recibido tu solicitud"
         });
     }
 
-    addMessageToUI(text, sender, isLoading = false) {
-        const { history } = this.elements;
+    addMessageToUI(text, sender, file = null) {
         const div = document.createElement('div');
-        div.id = 'msg-' + Date.now();
         const isUser = sender === 'user';
-        
-        const commonClass = "p-4 max-w-[80%] text-sm font-medium leading-relaxed mb-1 shadow-sm relative break-words";
-        const userStyle = "bg-gradient-to-r from-nc-user-start to-nc-user-end text-white self-end rounded-2xl rounded-br-none ml-auto text-right";
-        const botStyle = "bg-white text-gray-700 self-start rounded-2xl rounded-bl-none bot-shadow border border-gray-100/50";
+        div.className = `flex w-full mb-4 ${isUser ? 'justify-end' : 'justify-start'}`;
+        const bubbleClass = isUser ? 'bg-nc-primary text-white nc-user-msg rounded-br-none' : 'bg-white text-nc-text border border-slate-200 shadow-sm rounded-bl-none';
+        const fileHTML = file ? `<div class="mb-2 pb-2 border-b ${isUser ? 'border-white/20' : 'border-slate-100'} text-xs flex gap-2"><i class="fa-solid fa-file"></i> ${file.name}</div>` : '';
+        const parsedText = sender === 'bot' && window.marked ? window.marked.parse(text) : text;
 
-        div.className = `${commonClass} ${isUser ? userStyle : botStyle}`;
-
-        if (isLoading) {
-            div.innerHTML = `
-                <div class="flex space-x-1 items-center justify-center h-4 w-8">
-                    <div class="w-1.5 h-1.5 bg-nc-header/40 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                    <div class="w-1.5 h-1.5 bg-nc-header/60 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                    <div class="w-1.5 h-1.5 bg-nc-header rounded-full animate-bounce"></div>
-                </div>`;
-             div.classList.add("self-start");
-        } else {
-            div.innerHTML = window.marked ? window.marked.parse(text) : text;
-        }
-
-        history.appendChild(div);
-        history.scrollTop = history.scrollHeight;
-        return div.id;
+        div.innerHTML = `<div class="nc-message-bubble max-w-[85%] rounded-2xl p-3.5 text-sm leading-relaxed ${bubbleClass}">${fileHTML}<div>${parsedText}</div></div>`;
+        this.dom['nc-chat-history'].appendChild(div);
+        this.scrollToBottom();
     }
 
-    removeMessage(id) {
-        const el = document.getElementById(id);
-        if (el) el.remove();
+    addSystemMessage(text) { this.addMessageToUI(text, 'bot'); }
+
+    addLoadingIndicator() {
+        const id = 'loader-' + Date.now();
+        const div = document.createElement('div');
+        div.id = id;
+        div.className = 'flex w-full mb-4 justify-start';
+        div.innerHTML = `<div class="bg-white border border-slate-200 rounded-2xl rounded-bl-none p-4 shadow-sm"><div class="flex space-x-2"><div class="w-2 h-2 bg-nc-primary rounded-full animate-bounce"></div><div class="w-2 h-2 bg-nc-secondary rounded-full animate-bounce [animation-delay:0.2s]"></div><div class="w-2 h-2 bg-nc-primary rounded-full animate-bounce [animation-delay:0.4s]"></div></div></div>`;
+        this.dom['nc-chat-history'].appendChild(div);
+        this.scrollToBottom();
+        return id;
     }
+
+    removeMessage(id) { const el = document.getElementById(id); if (el) el.remove(); }
+    scrollToBottom() { const h = this.dom['nc-chat-history']; h.scrollTop = h.scrollHeight; }
+    toBase64(file) { return new Promise((r, j) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => r(reader.result); reader.onerror = j; }); }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new NeuralChatbot());
-} else {
-    new NeuralChatbot();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => new NeuralChatbot());
+else new NeuralChatbot();

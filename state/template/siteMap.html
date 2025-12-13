@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa del Sitio | Neural Connection</title>
+    <meta name="description" content="Mapa del sitio de Neural Connection. Encuentra todo nuestro contenido fácilmente.">
+    <link rel="shortcut icon" href="state/imgs/icon.png" type="image/x-icon">
+    
+    <link rel="stylesheet" href="../stylers/styler.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <style>
+        .sitemap-section {
+            padding: 4rem 2rem;
+            min-height: 60vh;
+            background-color: #f8f9fa;
+        }
+        .sitemap-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .sitemap-title {
+            text-align: center;
+            color: var(--main-color);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        .sitemap-tree ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .sitemap-tree li {
+            margin: 10px 0;
+            position: relative;
+        }
+        .sitemap-tree li::before {
+            content: "\f0da"; /* FontAwesome arrow */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--txt-menu-color-after);
+            margin-right: 10px;
+        }
+        .sitemap-tree a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .sitemap-tree a:hover {
+            color: var(--txt-menu-color-after);
+            padding-left: 5px;
+        }
+        /* Jerarquía visual */
+        .sitemap-tree > ul > li > a {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .sitemap-tree ul ul {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-left: 2px solid #eee;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="state/imgs/Recurso 13.png" alt="Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="../../index.html#entidades">Nosotros</a></li>
+                <li><a href="render.html">Portafolio</a></li>
+                <li><a href="../../index.html#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="sitemap-section">
+        <div class="sitemap-container">
+            <h1 class="sitemap-title">Mapa del Sitio</h1>
+            
+            <div class="sitemap-tree">
+                <ul>
+                    <li><a href="../../index.html">Página Principal (Home)</a>
+                        <ul>
+                            <li><a href="../../index.html#inicio">Inicio</a></li>
+                            <li><a href="../../index.html#entidades">Sobre Nosotros</a></li>
+                            <li><a href="../../index.html#proyectos">Proyectos Destacados</a></li>
+                            <li><a href="../../index.html#testimonios">Testimonios</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li><a href="render.html">Portafolio & Cronología</a>
+                        <ul>
+                            <li><a href="render.html#">DIO-DIM (Seguridad)</a></li>
+                            <li><a href="render.html#">fixRD (Consultoría)</a></li>
+                            <li><a href="render.html#">Lilaila Book (Diseño)</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#">Legal & Soporte</a>
+                        <ul>
+                            <li><a href="privacy.html">Política de Privacidad</a></li>
+                            <li><a href="index.html#contacto">Contacto</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-logo">
+                <img class="icono-footer" src="../imgs/Recurso 21.png" alt="Icon" />
+                <img class="titulo-footer" src="../imgs/Recurso 13.png" alt="Logo">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="privacy.html">privacy</a> |
+                <a href="siteMap.html" style="color: #00ccff;">site map</a>
+            </div>
+            <div>
+                <p>Copyright © 2025 - Neural Connection | Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
