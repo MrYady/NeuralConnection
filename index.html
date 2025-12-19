@@ -9,44 +9,38 @@
   <link rel="stylesheet" href="state/stylers/styler.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+
+      <!-- Tailwind CSS para estilizado rápido y eficiente -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+
+     <style>
+        /* Optimizaciones críticas de CSS */
+        .slider-track {
+            will-change: transform; /* Pista para el navegador: optimizar para cambios de transformación */
+            transition-timing-function: linear;
+        }
+        
+        /* Ocultar barra de scroll pero permitir funcionalidad en algunos navegadores si falla JS */
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+    </style>
 </head>
 
 <body>
 
-
-  <!-- Hero -->
-  <!-- <section id="inicio" class="hero">
-    <p class="conten-inicio"><span>Buena Idea!</span> <br> hacemos el resto.</p>
-    <p>Impulsamos tu crecimiento con tecnología y creatividad.</p>
-    <div class="esfera">
-      <div class="instruction">Arrastra para rotar la esfera</div>
-      <canvas id="canvas"></canvas>
-    </div>
-  </section> -->
-
-  <section id="inicio" class="hero">
-        <div class="hero-container">
-            <div class="content-text">
-                <span class="tagline">Innovación Digital</span>
-                <h1 class="headline">Que buena Idea!<br><span>hacemos el resto.</span></h1>
-                <h4 class="categoria">Marketing y desarrollo</h4>
-                <p class="sub-headline">Impulsamos tu crecimiento con investigación, tecnología de punta y creatividad estratégica.</p>
-            </div>
-
-            <div class="sphere-wrapper">
-                <div class="instruction">Arrastra para explorar</div>
-                <canvas id="canvas"></canvas>
-            </div>
-        </div>
-    </section>
   <!-- Header -->
   <header>
     <nav id="nav" class="navbar">
       <div class="logo"><a href="index.html"><img src="state/imgs/Recurso 13.png" alt=""></a></div>
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#nav">Nosotros</a></li>
-        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#entidades">Nosotros</a></li>
         <li><a href="state/template/render.html">Portafolio</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#contacto">Contacto</a></li>
@@ -55,113 +49,150 @@
     </nav>
   </header>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galería de Entidades</title>
-    </head>
-<body>
+  <section id="inicio" class="hero paralax">
+    <div class="hero-container">
+      <div class="content-text">
+        <span class="tagline">Innovación Digital</span>
+        <h1 class="headline">Que buena Idea!<br><span>hacemos el resto.</span></h1>
+        <h4 class="categoria">Marketing y desarrollo</h4>
+        <p class="sub-headline">Impulsamos tu crecimiento con investigación, tecnología de punta y creatividad
+          estratégica.</p>
+      </div>
 
-<section id="entidades" class="section entidades-sect">
-    <div class="Nosotros">
-        <h2>Sobre Nosotros</h2>
-        <p>Somos una empresa dedicada a ofrecer soluciones digitales, diseño y consultoría estratégica.</p>
+      <div class="sphere-wrapper">
+        <div class="instruction">Arrastra para explorar</div>
+        <canvas id="canvas"></canvas>
+      </div>
     </div>
-    
+  </section>
+
+
+   <!-- SECCIÓN SOLICITADA: .servicios -->
+    <section class="servicios relative w-full py-20 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
+        
+        <div class="max-w-7xl mx-auto px-4 mb-12 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Nuestros Servicios</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">Soluciones de ingeniería optimizadas para escalar tu negocio con la máxima eficiencia.</p>
+        </div>
+
+        <!-- Contenedor del Slider -->
+        <div class="slider-container relative w-full overflow-hidden" id="infiniteSliderContainer">
+            <!-- Gradientes de desvanecimiento para efecto estético -->
+            <div class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+
+            <!-- Pista del Slider (Track) -->
+            <!-- Flexbox para alinear items horizontalmente -->
+            <div class="slider-track flex gap-6 px-6" id="sliderTrack">
+                <!-- El contenido se inyectará dinámicamente para garantizar la duplicación correcta -->
+            </div>
+        </div>
+
+
+    </section>
+
+
+  <section id="entidades" class="section entidades-sect">
+    <div class="Nosotros">
+      <h2>Sobre Nosotros</h2>
+      <p>Somos una empresa dedicada a ofrecer soluciones digitales, diseño y consultoría estratégica.</p>
+    </div>
+
     <h2>Nuestras Entidades</h2>
 
     <div class="entidades-container" id="gallery-container">
-        
-        <div class="entidad-card" data-id="neural">
-            <div class="img-wrapper">
-                <img class="logo" src="state/imgs/Recurso 20.png" alt="Neural Entity">
-            </div>
-            <div class="hover-summary">
-                <h3>Neural Connection</h3>
-                <p>Inteligencia Artificial y Procesamiento de Datos.</p>
-                <span class="cta-text">Click para ver detalles</span>
-            </div>
-        </div>
 
-        <div class="entidad-card" data-id="code">
-            <div class="img-wrapper">
-                <img class="logo" src="state/imgs/code.png" alt="Code Entity">
-            </div>
-            <div class="hover-summary">
-                <h3>Code Connection</h3>
-                <p>Arquitectura de Software y Desarrollo Full Stack.</p>
-                <span class="cta-text">Click para ver detalles</span>
-            </div>
+      <div class="entidad-card" data-id="neural">
+        <div class="img-wrapper">
+          <img class="logo" src="state/imgs/Recurso 20.png" alt="Neural Entity">
         </div>
+        <div class="hover-summary">
+          <h3>Neural Connection</h3>
+          <p>Inteligencia Artificial y Procesamiento de Datos.</p>
+          <span class="cta-text">Click para ver detalles</span>
+        </div>
+      </div>
 
-        <div class="entidad-card" data-id="render">
-            <div class="img-wrapper">
-                <img class="logo" src="state/imgs/fixrd.png" alt="Render Entity">
-            </div>
-            <div class="hover-summary">
-                <h3>Render Connection</h3>
-                <p>Diseño Gráfico, UX/UI y Renderizado 3D.</p>
-                <span class="cta-text">Click para ver detalles</span>
-            </div>
+      <div class="entidad-card" data-id="code">
+        <div class="img-wrapper">
+          <img class="logo" src="state/imgs/code.png" alt="Code Entity">
         </div>
+        <div class="hover-summary">
+          <h3>Code Connection</h3>
+          <p>Arquitectura de Software y Desarrollo Full Stack.</p>
+          <span class="cta-text">Click para ver detalles</span>
+        </div>
+      </div>
+
+      <div class="entidad-card" data-id="render">
+        <div class="img-wrapper">
+          <img class="logo" src="state/imgs/fixrd.png" alt="Render Entity">
+        </div>
+        <div class="hover-summary">
+          <h3>Render Connection</h3>
+          <p>Diseño Gráfico, UX/UI y Renderizado 3D.</p>
+          <span class="cta-text">Click para ver detalles</span>
+        </div>
+      </div>
     </div>
-</section>
-
-<div id="entity-modal" class="modal-overlay">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2 id="modal-title">Título de Entidad</h2>
-        <div class="modal-body">
-            <div class="modal-section">
-                <h4>Objetivo</h4>
-                <p id="modal-objective">...</p>
-            </div>
-            <div class="modal-section">
-                <h4>Misión</h4>
-                <p id="modal-mission">...</p>
-            </div>
-            <div class="modal-section">
-                <h4>Valores</h4>
-                <ul id="modal-values"></ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-</body>
-</html>
-    </div>
-
-
   </section>
 
-    <!-- POR QUÉ ELEGIRNOS -->
-  <section class="value-prop">
-        <div class="container value-grid">
-            <div class="value-content">
-                <span style="color: var(--color-secondary); font-weight:bold;">POR QUÉ ELEGIRNOS  </span>
-                <h2 style="color: var(--color-primary); font-size: 2.5rem; margin: 1rem 0;">Diseño y Código en perfecta sincronía</h2>
-                <p>
-                    A diferencia de agencias tradicionales, en <strong>Neural Connection</strong> entendemos que un buen diseño necesita un código eficiente, y un código robusto necesita una interfaz intuitiva.
-                </p>
-                <ul class="value-list">
-                    <li><i class="fa-solid fa-check"></i> Soluciones integrales (End-to-End).</li>
-                    <li><i class="fa-solid fa-check"></i> Optimización de rendimiento (Web Vitals).</li>
-                    <li><i class="fa-solid fa-check"></i> Creatividad aplicada a resultados de negocio.</li>
-                </ul>
-                <a href="#" class="btn _conocer_mas" >Conocer más</a>
-            </div>
-            <div class="value-img">
-                <div >
-                    [Imagen Representativa de Equipo/Tech]
-                </div>
-            </div>
+  <div id="entity-modal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2 id="modal-title">Título de Entidad</h2>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h4>Objetivo</h4>
+          <p id="modal-objective">...</p>
         </div>
-    </section>
+        <div class="modal-section">
+          <h4>Misión</h4>
+          <p id="modal-mission">...</p>
+        </div>
+        <div class="modal-section">
+          <h4>Valores</h4>
+          <ul id="modal-values"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Servicios
+</body>
+
+</html>
+</div>
+
+
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="value-prop">
+  <div class="container value-grid">
+    <div class="value-content">
+      <span style="color: var(--color-secondary); font-weight:bold;">POR QUÉ ELEGIRNOS </span>
+      <h2 style="color: var(--color-primary); font-size: 2.5rem; margin: 1rem 0;">Diseño y Código en perfecta sincronía
+      </h2>
+      <p>
+        A diferencia de agencias tradicionales, en <strong>Neural Connection</strong> entendemos que un buen diseño
+        necesita un código eficiente, y un código robusto necesita una interfaz intuitiva.
+      </p>
+      <ul class="value-list">
+        <li><i class="fa-solid fa-check"></i> Soluciones integrales (End-to-End).</li>
+        <li><i class="fa-solid fa-check"></i> Optimización de rendimiento (Web Vitals).</li>
+        <li><i class="fa-solid fa-check"></i> Creatividad aplicada a resultados de negocio.</li>
+      </ul>
+      <a href="#" class="btn _conocer_mas">Conocer más</a>
+    </div>
+    <div class="value-img">
+      <div>
+        [Imagen Representativa de Equipo/Tech]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Servicios
   <section id="servicios" class="section">
     <h2>Servicios</h2>
     <div class="cards">
@@ -182,7 +213,7 @@
 
 <!-- Proyectos -->
 <section id="proyectos" class="section projects">
-  
+
   <div class="ptoyectgid">
     <h2>Proyectos</h2>
     <div class="proyects-list">
@@ -191,7 +222,7 @@
       <div class="proyect-item activo"><img src="state/imgs/Recurso 21.png" alt="Proyecto-items"></div>
       <div class="proyect-item activo"><img src="state/imgs/Recurso 21.png" alt="Proyecto-items"></div>
     </div>
-  <p><a href="">Ver más...</a></p>
+    <p><a href="">Ver más...</a></p>
   </div>
   <div class="proyect-actual">
     <h2>Proyecto Actual</h2>
@@ -207,17 +238,17 @@
 
 
 
-  <!-- Testimonios -->
-  <section id="testimonios" class="section">
-    <h2>Testimonios</h2>
-    <div class="testimonial lilaila-testimonial">
-      <img src="state/imgs/lilaila.png" alt="">
-    <div> 
+<!-- Testimonios -->
+<section id="testimonios" class="section">
+  <h2>Testimonios</h2>
+  <div class="testimonial lilaila-testimonial">
+    <img src="state/imgs/lilaila.png" alt="">
+    <div>
       <p>“EmpresaX transformó completamente nuestra imagen digital. ¡100% recomendados!”</p>
       <span>- Ana López, CEO de MarcaPro</span>
     </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 
 
@@ -234,72 +265,75 @@
 
 
 
-  <!-- Footer -->
-  <footer id="contacto" class="footer">
-    <div class="footer-top">
-      <div class="footer-logo">
-        <img class="icono-footer" src="state/imgs/Recurso 21.png" alt="Neural Connection" />
-        <img class="titulo-footer" src="state/imgs/Recurso 13.png" alt="">
-      </div>
-      
+<!-- Footer -->
+<footer id="contacto" class="footer">
+  <div class="footer-top">
+    <div class="footer-logo">
+      <img class="icono-footer" src="state/imgs/Recurso 21.png" alt="Neural Connection" />
+      <img class="titulo-footer" src="state/imgs/Recurso 13.png" alt="">
     </div>
 
-    <div class="footer-content">
-      <div class="footer-col">
-        <h3>Detalles de contacto</h3>
-        <p><i class="fa-solid fa-phone"></i><span> (843) 503 - 1616</span></p>
-        <p><i class="fa-solid fa-envelope"></i> neuralconnection @neuralconnection.net</p>
-        <p><i class="fa-solid fa-location-dot"></i> <span>RD, Santo Domingo, Destrito Nacional</span></p>
-      </div>
-      <div class="footer-col">
-        <h3>Links</h3>
-        <ul>
-          <li><a href="">Home</a></li>
-          <li><a href="">About us</a></li>  
-          <li><a href="">Services</a></li>
-          <li><a href="">Contact us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Services</h3>
-        <ul>
-          <li><a href="">About us</a></li>
-          <li><a href="">Services</a></li>
-          <li><a href="">Contact us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Resources</h3>
-        <ul>
-          <li><a href="">Home</a></li>
-          <li><a href="">About us</a></li>
-          <li><a href="">Services</a></li>
-          <li><a href="">Contact us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Follow us</h3>
-        <div class="social-icons">
-          <a href="https://www.instagram.com/neural_connection_rd/"><i class="fa-brands fa-instagram"></i></a>
-          <a href=""><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://www.linkedin.com/company/neural-connection/"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="https://www.youtube.com/@Neural_Connection_RD"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-    </div>    
+  </div>
 
-    <div class="footer-bottom">
-      <div class="footer-links">
-        <a href="state/template/privacy.html">privacy</a> |
-        <a href="state/template/siteMap.html">site map</a>
-      </div>
-      <div>
-        <p>Copyright © 2025 - Neural Connection | todos derechos reservados</p>
+  <div class="footer-content">
+    <div class="footer-col">
+      <h3>Detalles de contacto</h3>
+      <p><i class="fa-solid fa-phone"></i><span> (843) 503 - 1616</span></p>
+      <p><i class="fa-solid fa-envelope"></i> neuralconnection @neuralconnection.net</p>
+      <p><i class="fa-solid fa-location-dot"></i> <span>RD, Santo Domingo, Destrito Nacional</span></p>
+    </div>
+    <div class="footer-col">
+      <h3>Links</h3>
+      <ul>
+        <li><a href="">Home</a></li>
+        <li><a href="">About us</a></li>
+        <li><a href="">Services</a></li>
+        <li><a href="">Contact us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Services</h3>
+      <ul>
+        <li><a href="">About us</a></li>
+        <li><a href="">Services</a></li>
+        <li><a href="">Contact us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="">Home</a></li>
+        <li><a href="">About us</a></li>
+        <li><a href="">Services</a></li>
+        <li><a href="">Contact us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Follow us</h3>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/neural_connection_rd/"><i class="fa-brands fa-instagram"></i></a>
+        <a href=""><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.linkedin.com/company/neural-connection/"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@Neural_Connection_RD"><i class="fa-brands fa-youtube"></i></a>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <script src="state/scripts/sketchSphere.js" defer></script>
-  <script src="state/scripts/entidades.js" defer></script>
-  <script src="state/scripts/chatbot.js" defer></script>
-  </body>
+  <div class="footer-bottom">
+    <div class="footer-links">
+      <a href="state/template/privacy.html">privacy</a> |
+      <a href="state/template/siteMap.html">site map</a>
+    </div>
+    <div>
+      <p>Copyright © 2025 - Neural Connection | todos derechos reservados</p>
+    </div>
+  </div>
+</footer>
+<script src="state/scripts/sketchSphere.js" defer></script>
+<script src="state/scripts/entidades.js" defer></script>
+<script src="state/scripts/chatbot.js" defer></script>
+<script src="state/scripts/paralax.js" defer></script>
+<script src="state/scripts/nav.js" defer></script>
+<script src="state/scripts/scrollEffects.js" defer></script>
+<script src="state/scripts/servicos.js" defer></script>
+</body>

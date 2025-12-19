@@ -42,7 +42,7 @@ body {
 /* --- HERO SECTION --- */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 90vh;
     height: auto;
     padding-top: 80px; /* Espacio para el header fixed */
     display: flex;
@@ -52,6 +52,7 @@ body {
     background: radial-gradient(circle at 50% 50%, #0d4eb6 0%, var(--bg-dark) 100%);
     overflow: hidden;
     font-family: "Noto Sans Devanagari", sans-serif;
+    z-index: -100;
 }
 
 .hero-container {
@@ -225,6 +226,7 @@ header {
 
 
 .navbar {
+    width: 100%;  
     flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
     justify-content: space-between;
     padding: 1rem 5%;
@@ -280,6 +282,56 @@ header {
 .btn:hover {
   background-color: #0046cc;
 }
+
+
+/* =========================================
+   INTERACCIONES DEL MENÚ (NEURAL STYLE)
+   ========================================= */
+
+/* 1. Estado Activo (Scroll Spy) */
+.nav-links li a {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Cuando la sección es visible: Texto blanco brillante + Subrayado expansivo */
+.nav-links li a.active-link {
+    color: #fff !important;
+    text-shadow: 0 0 8px var(--txt-menu-color-after), 0 0 15px var(--txt-menu-color-after);
+    transform: scale(1.1);
+}
+
+/* Línea inferior animada */
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 2px;
+    background: var(--txt-menu-color-after); /* Azul Neón */
+    box-shadow: 0 0 10px var(--txt-menu-color-after);
+    transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-links li a.active-link::after {
+    width: 100%;
+}
+
+/* 2. Animación de Click (Feedback Hóptico Visual) */
+@keyframes pressEffect {
+    0% { transform: scale(1); }
+    40% { transform: scale(0.9); color: #80c4ff; }
+    100% { transform: scale(1); }
+}
+
+.click-animate {
+    animation: pressEffect 0.3s ease forwards;
+}
+
+
+
 
 
 .entidades-sect {
@@ -506,12 +558,17 @@ header {
   padding: 1rem;
   gap:  1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 2rem; ;
+  padding: 2rem 20%;
+  align-items: center;
+  justify-items: center;
+  
 }
-  .projects img {
-    max-width: 100px;
-    width: 90%;
+.projects img {
+    max-width: 350px;
+    width: auto;
     border-radius: 8px;
+    padding: 1.5rem;
+
   }
 
 
@@ -522,19 +579,16 @@ header {
     display: grid;
     grid-template-columns:  1fr 1fr;
     gap: 1.5rem;
-
   }
 
    .projects .proyect-actual{
     /* background-color: var(--main-color-claro); */
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
 
     .projects .proyect-actual img {
-    width: 60%;
+    width: 100%;
    }
 
 
@@ -750,9 +804,6 @@ header {
   text-decoration: underline;
   color: #00ccff;
 }
-
-
-
 
 
 
