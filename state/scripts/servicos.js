@@ -172,21 +172,21 @@
                 this.animationId = requestAnimationFrame(() => this.animate());
             }
             
-            // Métodos para botones externos
-            scrollNext() {
-                this.currentScroll += 300; // Ancho aproximado de tarjeta
-            }
+            // // Métodos para botones externos
+            // scrollNext() {
+            //     this.currentScroll += 300; // Ancho aproximado de tarjeta
+            // }
             
-            scrollPrev() {
-                this.currentScroll -= 300;
-            }
+            // scrollPrev() {
+            //     this.currentScroll -= 300;
+            // }
         }
 
         // Instanciar cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', () => {
             const slider = new InfiniteSlider('infiniteSliderContainer', 'sliderTrack', servicesData);
             
-            // Conectar botones
-            document.getElementById('nextBtn').addEventListener('click', () => slider.scrollNext());
-            document.getElementById('prevBtn').addEventListener('click', () => slider.scrollPrev());
+            // // Conectar botones
+            // document.getElementById('nextBtn').addEventListener('click', () => slider.scrollNext());
+            // document.getElementById('prevBtn').addEventListener('click', () => slider.scrollPrev());
         });

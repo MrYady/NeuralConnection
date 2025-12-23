@@ -10,26 +10,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 
-      <!-- Tailwind CSS para estilizado rápido y eficiente -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Iconos Phosphor -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Tailwind CSS para estilizado rápido y eficiente -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Iconos Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
 
-     <style>
-        /* Optimizaciones críticas de CSS */
-        .slider-track {
-            will-change: transform; /* Pista para el navegador: optimizar para cambios de transformación */
-            transition-timing-function: linear;
-        }
-        
-        /* Ocultar barra de scroll pero permitir funcionalidad en algunos navegadores si falla JS */
+  <style>
+    /* Optimizaciones críticas de CSS */
+    .slider-track {
+      will-change: transform;
+      /* Pista para el navegador: optimizar para cambios de transformación */
+      transition-timing-function: linear;
+    }
 
-        .service-card:hover {
-            transform: translateY(-5px);
-        }
-        
-    </style>
+    /* Ocultar barra de scroll pero permitir funcionalidad en algunos navegadores si falla JS */
+
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
 </head>
 
 <body>
@@ -37,7 +37,10 @@
   <!-- Header -->
   <header>
     <nav id="nav" class="navbar">
-      <div class="logo"><a href="index.html"><img src="state/imgs/Recurso 13.png" alt=""></a></div>
+      <div class="logo">
+        <!-- <a href="index.html"><img src="state/imgs/Recurso 21.png" alt=""></a> -->
+        <a href="index.html"><img src="state/imgs/Recurso 13.png" alt=""></a>
+      </div>
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#entidades">Nosotros</a></li>
@@ -52,10 +55,10 @@
   <section id="inicio" class="hero paralax">
     <div class="hero-container">
       <div class="content-text">
-        <span class="tagline">Innovación Digital</span>
-        <h1 class="headline">Que buena Idea!<br><span>hacemos el resto.</span></h1>
+        <span class="tagline reveal-text">Innovación Digital</span>
+        <h1 class="headline slide-left">Que buena Idea!<br><span>hacemos el resto.</span></h1>
         <h4 class="categoria">Marketing y desarrollo</h4>
-        <p class="sub-headline">Impulsamos tu crecimiento con investigación, tecnología de punta y creatividad
+        <p class="sub-headline typing-effect">Impulsamos tu crecimiento con investigación, tecnología de punta y creatividad
           estratégica.</p>
       </div>
 
@@ -67,51 +70,45 @@
   </section>
 
 
-   <!-- SECCIÓN SOLICITADA: .servicios -->
-    <section class="servicios relative w-full py-20 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
-        
-        <div class="max-w-7xl mx-auto px-4 mb-12 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Nuestros Servicios</h2>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">Soluciones de ingeniería optimizadas para escalar tu negocio con la máxima eficiencia.</p>
-        </div>
+  <!-- SECCIÓN SOLICITADA: .servicios -->
+  <section class="servicios relative w-full py-20 overflow-hidden  from-slate-50 to-slate-100">
 
-        <!-- Contenedor del Slider -->
-        <div class="slider-container relative w-full overflow-hidden" id="infiniteSliderContainer">
-            <!-- Gradientes de desvanecimiento para efecto estético -->
-            <div class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
-            <div class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 mb-12 text-center">
+      <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">What we <span class="offer"
+          style="color: #1e1f73;">offer</span> our customers</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Soluciones de ingeniería optimizadas para escalar tu negocio
+        con la máxima eficiencia.</p>
+    </div>
 
-            <!-- Pista del Slider (Track) -->
-            <!-- Flexbox para alinear items horizontalmente -->
-            <div class="slider-track flex gap-6 px-6" id="sliderTrack">
-                <!-- El contenido se inyectará dinámicamente para garantizar la duplicación correcta -->
-            </div>
-        </div>
+    <!-- Contenedor del Slider -->
+    <div class="slider-container relative w-full overflow-hidden" id="infiniteSliderContainer">
+      <!-- Gradientes de desvanecimiento para efecto estético -->
+      <div
+        class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none">
+      </div>
+      <div
+        class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none">
+      </div>
+
+      <!-- Pista del Slider (Track) -->
+      <!-- Flexbox para alinear items horizontalmente -->
+      <div class="slider-track flex gap-6 px-6" id="sliderTrack">
+        <!-- El contenido se inyectará dinámicamente para garantizar la duplicación correcta -->
+      </div>
+    </div>
 
 
-    </section>
+  </section>
 
 
   <section id="entidades" class="section entidades-sect">
     <div class="Nosotros">
-      <h2>Sobre Nosotros</h2>
-      <p>Somos una empresa dedicada a ofrecer soluciones digitales, diseño y consultoría estratégica.</p>
+      <h2>Áreas de Acción</h2>
+      <p>Nuestras Áreas de Acción están diseñadas para ofrecer soluciones integrales y especializadas. Cada división
+        opera con autonomía y experiencia técnica, permitiéndonos abordar los desafíos de nuestros clientes con la
+        precisión y el enfoque que cada proyecto requiere.</p>
     </div>
-
-    <h2>Nuestras Entidades</h2>
-
     <div class="entidades-container" id="gallery-container">
-
-      <div class="entidad-card" data-id="neural">
-        <div class="img-wrapper">
-          <img class="logo" src="state/imgs/Recurso 20.png" alt="Neural Entity">
-        </div>
-        <div class="hover-summary">
-          <h3>Neural Connection</h3>
-          <p>Inteligencia Artificial y Procesamiento de Datos.</p>
-          <span class="cta-text">Click para ver detalles</span>
-        </div>
-      </div>
 
       <div class="entidad-card" data-id="code">
         <div class="img-wrapper">
@@ -170,11 +167,12 @@
 <section class="value-prop">
   <div class="container value-grid">
     <div class="value-content">
-      <span style="color: var(--color-secondary); font-weight:bold;">POR QUÉ ELEGIRNOS </span>
+      <span style="font-weight:bold;">POR QUÉ ELEGIRNOS </span>
       <h2 style="color: var(--color-primary); font-size: 2.5rem; margin: 1rem 0;">Diseño y Código en perfecta sincronía
       </h2>
       <p>
-        A diferencia de agencias tradicionales, en <strong>Neural Connection</strong> entendemos que un buen diseño
+        A diferencia de agencias tradicionales, en <span><strong>Neural Connection</strong></span> entendemos que un
+        buen diseño
         necesita un código eficiente, y un código robusto necesita una interfaz intuitiva.
       </p>
       <ul class="value-list">
@@ -334,6 +332,6 @@
 <script src="state/scripts/chatbot.js" defer></script>
 <script src="state/scripts/paralax.js" defer></script>
 <script src="state/scripts/nav.js" defer></script>
-<script src="state/scripts/scrollEffects.js" defer></script>
+<!-- <script src="state/scripts/scrollEffects.js" defer></script> -->
 <script src="state/scripts/servicos.js" defer></script>
 </body>
