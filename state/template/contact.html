@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Connection - Pro Interface</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        bg: '#f7f9fa',
+                        surface: '#ffffff',
+                        text: '#021024',
+                        muted: '#163761',
+                        border: '#95c5ee',
+                        accent: '#1e1f73',
+                        primary: '#052659',
+                        highlight: '#c1e8ff',
+                        link: '#1573ee'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f7f9fa; color: #021024; }
+        .input-underline {
+            background-image: linear-gradient(#052659, #052659);
+            background-size: 0% 100%; background-position: 0% 100%; background-repeat: no-repeat;
+            transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-group:focus-within .input-underline { background-size: 100% 100%; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; transform: translateY(20px);
+        }
+        .delay-200 { animation-delay: 0.2s; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 selection:bg-primary selection:text-white">
+
+    <div class="w-full max-w-6xl flex flex-col lg:flex-row gap-16 lg:gap-32 items-start">
+        
+        <!-- Left Column: Identity -->
+        <div class="lg:w-1/2 pt-4 fade-in-up">
+            <!-- Back Button -->
+            <a href="index.html" class="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors mb-8 group">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                <span class="text-sm font-medium">Volver al Inicio</span>
+            </a>
+
+            <div class="mb-8">
+                <p class="text-xs font-bold tracking-[0.2em] text-link uppercase mb-4">Engineering & Data Science</p>
+                <h1 class="text-5xl lg:text-7xl font-bold tracking-tighter leading-tight mb-6 text-primary">
+                    Neural<span class="text-border">.</span><br>
+                    <span class="text-accent opacity-90">Connection</span>
+                </h1>
+                <p class="text-lg text-muted font-normal max-w-sm leading-relaxed">
+                    Arquitectura de software escalable y modelos predictivos optimizados.
+                </p>
+            </div>
+
+            <!-- Social Links Restored -->
+            <div class="flex gap-6 mb-10">
+                <a href="https://instagram.com/neural_connection_rd" target="_blank" class="text-muted hover:text-primary transition-colors hover:scale-110 transform duration-200"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="https://linkedin.com/company/neural-connection" target="_blank" class="text-muted hover:text-primary transition-colors hover:scale-110 transform duration-200"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                <a href="https://github.com" target="_blank" class="text-muted hover:text-primary transition-colors hover:scale-110 transform duration-200"><i data-lucide="github" class="w-6 h-6"></i></a>
+            </div>
+            
+            <div class="flex items-center gap-3 text-xs text-muted font-mono bg-white px-3 py-1.5 rounded-full w-fit shadow-sm border border-border/30">
+                <div id="statusIndicator" class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                <span id="statusText">SYSTEM: INITIALIZING...</span>
+            </div>
+            <p class="text-[10px] text-muted/50 mt-2 ml-1">
+                * Backend local: <code class="bg-gray-200 px-1 rounded">OLLAMA_ORIGINS="*" ollama serve</code>
+            </p>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div class="w-full lg:w-1/2 fade-in-up delay-200">
+            <form id="contactForm" class="space-y-10">
+                
+                <!-- Email Input -->
+                <div class="group relative input-group">
+                    <input type="email" id="email" required class="block w-full py-3 bg-transparent border-b border-border text-lg focus:outline-none placeholder-transparent peer text-primary font-medium" placeholder="Email">
+                    <label for="email" class="absolute left-0 top-3 text-muted/70 text-lg transition-all duration-300 -translate-y-7 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-7 peer-focus:text-primary cursor-text font-medium">Correo Electrónico</label>
+                    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary input-underline opacity-0 group-focus-within:opacity-100"></div>
+                </div>
+
+                <!-- Org Type -->
+                <div class="group relative input-group">
+                    <select id="orgType" class="block w-full py-3 bg-transparent border-b border-border text-lg focus:outline-none text-primary font-medium appearance-none cursor-pointer">
+                        <option value="Empresa">Empresa</option>
+                        <option value="Startup">Startup</option>
+                        <option value="Investigación">Investigación</option>
+                        <option value="Personal">Personal</option>
+                    </select>
+                    <label class="absolute left-0 -top-4 text-muted/70 text-sm scale-75 origin-[0] font-medium">Tipo de Organización</label>
+                    <i data-lucide="chevron-down" class="absolute right-0 top-4 text-muted w-4 h-4 pointer-events-none"></i>
+                    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary input-underline"></div>
+                </div>
+
+                <!-- Optimized File Input -->
+                <div>
+                    <input type="file" id="fileInput" class="hidden" multiple onchange="fileManager.handleSelection(this)">
+                    <div id="fileSelectionContainer" class="hidden mb-3 space-y-2">
+                        <div id="selectedFilesList" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <button type="button" onclick="document.getElementById('fileInput').click()" class="text-sm text-muted hover:text-primary flex items-center gap-2 transition-colors group font-medium">
+                        <span class="p-1.5 rounded-full border border-border group-hover:border-primary transition-colors bg-white shadow-sm">
+                            <i data-lucide="paperclip" class="w-3 h-3 text-link"></i>
+                        </span>
+                        <span id="mainFileLabel">Adjuntar documentos (Contexto)</span>
+                    </button>
+                </div>
+
+                <!-- Idea Input with AI -->
+                <div class="group relative input-group">
+                    <textarea id="idea" required rows="2" class="block w-full py-3 bg-transparent border-b border-border text-lg focus:outline-none placeholder-transparent peer text-primary font-medium resize-none" placeholder="Idea"></textarea>
+                    <label for="idea" class="absolute left-0 top-3 text-muted/70 text-lg transition-all duration-300 -translate-y-7 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-7 peer-focus:text-primary cursor-text font-medium">Descripción del Proyecto</label>
+                    <div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary input-underline opacity-0 group-focus-within:opacity-100"></div>
+                    
+                    <button type="button" id="enhanceBtn" class="absolute right-0 bottom-4 text-xs font-bold text-link hover:text-primary flex items-center gap-1.5 transition-colors uppercase tracking-wider bg-highlight/30 px-2 py-1 rounded hover:bg-highlight/50 backdrop-blur-sm">
+                        <i data-lucide="sparkles" class="w-3 h-3"></i> Refinar con AI
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-3">
+                    <button type="submit" class="w-full py-4 bg-primary text-white font-bold text-sm tracking-widest hover:bg-accent transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 group rounded-sm">
+                        GENERAR & ABRIR GMAIL
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"></i>
+                    </button>
+                    
+                    <a href="https://wa.me/18495031616" target="_blank" class="block w-full py-3 text-center border border-border text-muted font-semibold text-sm hover:text-primary hover:border-primary hover:bg-white transition-colors rounded-sm flex items-center justify-center gap-2">
+                        WhatsApp Directo
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Optimization Notification Modal -->
+    <div id="notificationModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary/30 backdrop-blur-md p-6 opacity-0 transition-opacity duration-300">
+        <div class="bg-white border border-border p-8 max-w-md w-full relative shadow-2xl rounded-lg transform scale-95 transition-transform duration-300" id="modalContent">
+            <button onclick="uiManager.closeModal()" class="absolute top-4 right-4 text-muted hover:text-red-500 transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+            
+            <div class="mb-6 flex items-center gap-3">
+                <div class="p-3 bg-highlight rounded-full">
+                    <i data-lucide="clipboard-check" class="text-primary w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-primary">Diseño Copiado</h3>
+                    <p class="text-xs text-muted">Listo para pegar en Gmail</p>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-blue-50 border-l-4 border-link p-3 text-sm text-blue-900">
+                    <p class="font-bold mb-1">✨ Estilo aplicado automáticamente</p>
+                    <p>Hemos copiado al portapapeles una plantilla con formato profesional. Solo presiona <strong>CTRL + V</strong> (o Pegar) cuando se abra Gmail.</p>
+                </div>
+
+                <div class="text-sm font-medium text-muted mt-4">Archivos pendientes de adjuntar:</div>
+                <div id="modalFileList" class="text-xs text-accent font-mono space-y-1 max-h-24 overflow-y-auto bg-bg p-2 rounded border border-border/50"></div>
+
+                <button onclick="uiManager.executeGmailProtocol()" class="w-full py-3 bg-primary text-white text-sm font-bold hover:bg-accent transition-colors rounded shadow-md flex items-center justify-center gap-2">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    Abrir Gmail y Pegar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * MODULE: FILE MANAGER
+         */
+        const fileManager = {
+            files: new Set(),
+            handleSelection(input) {
+                if (input.files && input.files.length > 0) {
+                    Array.from(input.files).forEach(file => {
+                        const fileKey = `${file.name}-${file.size}`; 
+                        let exists = false;
+                        this.files.forEach(f => { if (`${f.name}-${f.size}` === fileKey) exists = true; });
+                        if (!exists) this.files.add(file);
+                    });
+                    this.updateUI();
+                    input.value = ''; 
+                }
+            },
+            remove(fileName) {
+                this.files.forEach(f => { if(f.name === fileName) this.files.delete(f); });
+                this.updateUI();
+            },
+            updateUI() {
+                const container = document.getElementById('fileSelectionContainer');
+                const list = document.getElementById('selectedFilesList');
+                const label = document.getElementById('mainFileLabel');
+                list.innerHTML = '';
+                if (this.files.size > 0) {
+                    container.classList.remove('hidden');
+                    label.textContent = "Agregar más archivos";
+                    this.files.forEach(file => {
+                        const tag = document.createElement('div');
+                        tag.className = 'flex items-center gap-2 bg-white px-3 py-1.5 rounded-full text-xs text-primary border border-border shadow-sm animate-in fade-in zoom-in duration-200';
+                        tag.innerHTML = `<span class="truncate max-w-[120px] font-medium">${file.name}</span><button type="button" onclick="fileManager.remove('${file.name}')" class="text-muted hover:text-red-500 transition-colors"><i data-lucide="x" class="w-3 h-3"></i></button>`;
+                        list.appendChild(tag);
+                    });
+                    lucide.createIcons();
+                } else {
+                    container.classList.add('hidden');
+                    label.textContent = "Adjuntar documentos (Contexto)";
+                }
+            },
+            getFileListHTML() {
+                // Genera una lista HTML para el cuerpo rico del correo
+                if (this.files.size === 0) return '<p style="color: #666; font-style: italic;">Sin archivos adjuntos iniciales.</p>';
+                let html = '<ul style="background-color: #f0f4f8; padding: 10px 10px 10px 30px; border-radius: 5px;">';
+                this.files.forEach(f => {
+                    html += `<li style="color: #052659; margin-bottom: 4px;">📎 <strong>${f.name}</strong> <span style="color: #666; font-size: 0.9em;">(${(f.size/1024).toFixed(1)} KB)</span></li>`;
+                });
+                html += '</ul>';
+                return html;
+            }
+        };
+
+        /**
+         * MODULE: OLLAMA CONTROLLER
+         */
+        class OllamaController {
+            constructor() {
+                this.baseUrl = "http://localhost:11434";
+                this.model = "llama3.2"; 
+                this.checkConnection();
+            }
+            async checkConnection() {
+                const statusDot = document.getElementById('statusIndicator');
+                const statusText = document.getElementById('statusText');
+                try {
+                    const response = await fetch(`${this.baseUrl}/api/tags`);
+                    if(response.ok) {
+                        statusDot.className = "w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse";
+                        statusText.textContent = "SYSTEM: OLLAMA CONNECTED";
+                    }
+                } catch (e) {
+                    statusDot.className = "w-1.5 h-1.5 bg-red-500 rounded-full";
+                    statusText.textContent = "SYSTEM: OFFLINE";
+                }
+            }
+            async enhanceText(text) {
+                if (!text.trim()) return null;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); 
+                try {
+                    const response = await fetch(`${this.baseUrl}/api/generate`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            model: this.model,
+                            prompt: `Reescribe esto profesionalmente: "${text}". Solo devuelve el texto.`,
+                            stream: false
+                        }),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (!response.ok) throw new Error("Error");
+                    const data = await response.json();
+                    return data.response.trim();
+                } catch (error) { return null; }
+            }
+        }
+
+        /**
+         * MODULE: UI MANAGER
+         */
+        const uiManager = {
+            ollama: new OllamaController(),
+            pendingMailUrl: '',
+
+            init() {
+                lucide.createIcons();
+                this.bindEvents();
+            },
+
+            bindEvents() {
+                document.getElementById('enhanceBtn').addEventListener('click', async () => {
+                    const input = document.getElementById('idea');
+                    const btn = document.getElementById('enhanceBtn');
+                    const originalIcon = btn.innerHTML;
+                    if(!input.value) return;
+                    btn.innerHTML = `<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> PROCESANDO`;
+                    lucide.createIcons();
+                    const enhanced = await this.ollama.enhanceText(input.value);
+                    if (enhanced) {
+                        input.value = enhanced.replace(/^"/, '').replace(/"$/, '');
+                        input.classList.add('bg-highlight/30');
+                        setTimeout(() => input.classList.remove('bg-highlight/30'), 500);
+                    } else {
+                        btn.innerHTML = `<span class="text-red-500">ERROR</span>`;
+                        setTimeout(() => btn.innerHTML = originalIcon, 2000);
+                        return;
+                    }
+                    btn.innerHTML = originalIcon;
+                    lucide.createIcons();
+                });
+
+                document.getElementById('contactForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.prepareEmail();
+                });
+            },
+
+            // --- NUEVA FUNCIÓN DE COPIADO ROBUSTA ---
+            async copyToClipboard(html, text) {
+                // Intento 1: API Moderna (Navigator Clipboard)
+                // Puede fallar en iframes sin permisos explícitos
+                try {
+                    if (navigator.clipboard && navigator.clipboard.write) {
+                        const blobHtml = new Blob([html], { type: "text/html" });
+                        const blobText = new Blob([text], { type: "text/plain" });
+                        const data = [new ClipboardItem({ 
+                            "text/html": blobHtml,
+                            "text/plain": blobText 
+                        })];
+                        await navigator.clipboard.write(data);
+                        console.log("Copiado con Clipboard API (Rich Text)");
+                        return true;
+                    }
+                } catch (err) {
+                    console.warn("Clipboard API bloqueada o fallida, iniciando fallback legacy...", err);
+                }
+
+                // Intento 2: Legacy execCommand para Rich Text
+                // Crea un elemento DOM temporal, lo selecciona y ejecuta el comando de copia del navegador
+                try {
+                    const tempDiv = document.createElement("div");
+                    tempDiv.style.position = "absolute";
+                    tempDiv.style.left = "-9999px";
+                    tempDiv.innerHTML = html; // Inyectar HTML con estilos
+                    document.body.appendChild(tempDiv);
+                    
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    const range = document.createRange();
+                    range.selectNodeContents(tempDiv);
+                    selection.addRange(range);
+                    
+                    const successful = document.execCommand('copy');
+                    
+                    // Limpieza
+                    document.body.removeChild(tempDiv);
+                    selection.removeAllRanges();
+                    
+                    if(successful) {
+                        console.log("Copiado con execCommand (Rich Text Fallback)");
+                        return true;
+                    }
+                } catch (err) {
+                    console.error("Fallback Rich Text falló", err);
+                }
+
+                // Intento 3: Legacy execCommand solo Texto Plano (Último recurso)
+                try {
+                    const tempTextArea = document.createElement("textarea");
+                    tempTextArea.value = text;
+                    tempTextArea.style.position = "absolute";
+                    tempTextArea.style.left = "-9999px";
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(tempTextArea);
+                    if(successful) {
+                        console.log("Copiado con execCommand (Plain Text Fallback)");
+                        return true;
+                    }
+                } catch (err) {
+                    console.error("Fallo total de copiado", err);
+                    return false;
+                }
+                return false;
+            },
+
+            async prepareEmail() {
+                const email = document.getElementById('email').value;
+                const orgType = document.getElementById('orgType').value;
+                const idea = document.getElementById('idea').value.replace(/\n/g, '<br>'); // Preservar saltos de línea en HTML
+                const filesHtml = fileManager.getFileListHTML();
+                const plainFiles = Array.from(fileManager.files).map(f => `• ${f.name}`).join('\n');
+
+                // 1. GENERAR CUERPO RICO (HTML) PARA EL PORTAPAPELES
+                const richHtmlContent = `
+                    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; color: #021024;">
+                        <div style="border-left: 4px solid #052659; padding-left: 15px; margin-bottom: 20px;">
+                            <h2 style="color: #052659; margin: 0; font-size: 24px;">🚀 Propuesta de Proyecto</h2>
+                            <p style="color: #163761; margin: 5px 0 0 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Neural Connection Request</p>
+                        </div>
+                        
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: #f7f9fa; border-radius: 8px;">
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #dae1e7; width: 140px; font-weight: bold; color: #052659;">Entidad:</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #dae1e7; color: #163761;">${orgType}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; font-weight: bold; color: #052659;">Contacto:</td>
+                                <td style="padding: 12px; color: #1573ee;">${email}</td>
+                            </tr>
+                        </table>
+
+                        <div style="margin-bottom: 25px;">
+                            <h3 style="color: #052659; border-bottom: 1px solid #95c5ee; padding-bottom: 5px; font-size: 16px;">Descripción Técnica / Idea</h3>
+                            <p style="line-height: 1.6; color: #333; font-size: 15px;">${idea}</p>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <h3 style="color: #052659; border-bottom: 1px solid #95c5ee; padding-bottom: 5px; font-size: 16px;">Documentación Adjunta</h3>
+                            ${filesHtml}
+                            <p style="font-size: 12px; color: #888; margin-top: 5px;">* Archivos para ser adjuntados manualmente en este hilo.</p>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+                        <p style="font-size: 12px; color: #aaa; text-align: center;">Generado vía Neural Connection Interface</p>
+                    </div>
+                `;
+
+                // 2. TEXTO PLANO DE RESPALDO (Para la URL)
+                const plainBody = `SOLICITUD: ${orgType}\n\n${idea.replace(/<br>/g, '\n')}\n\n[Adjuntos pendientes:\n${plainFiles}]`;
+                const subject = encodeURIComponent(`Proyecto: ${orgType}`);
+
+                // 3. INTENTAR COPIAR USANDO EL NUEVO MÉTODO ROBUSTO
+                await this.copyToClipboard(richHtmlContent, plainBody);
+
+                // 4. PREPARAR URL Y MOSTRAR MODAL
+                this.pendingMailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=neuralconnection@neuralconnection.net&su=${subject}`; // Sin body en URL para obligar al paste
+                
+                this.showModal(plainFiles);
+            },
+
+            showModal(filesText) {
+                const modal = document.getElementById('notificationModal');
+                const content = document.getElementById('modalContent');
+                const list = document.getElementById('modalFileList');
+                
+                list.innerHTML = filesText ? filesText.split('\n').map(line => `<div>${line}</div>`).join('') : '<div class="text-gray-400 italic">Ninguno</div>';
+                
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }, 10);
+            },
+
+            closeModal() {
+                const modal = document.getElementById('notificationModal');
+                const content = document.getElementById('modalContent');
+                modal.classList.add('opacity-0');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            },
+
+            executeGmailProtocol() {
+                if(this.pendingMailUrl) {
+                    window.open(this.pendingMailUrl, '_blank');
+                    this.closeModal();
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => uiManager.init());
+    </script>
+</body>
+</html>
