@@ -4,23 +4,25 @@
 
         const testimonials = [
             {
-                text: "La arquitectura de este sistema es impresionante. Logramos reducir los tiempos de carga en un 40% simplemente integrando sus módulos optimizados.",
-                name: "Carlos Rivera",
+                text: "Neural Connection fue la pieza clave: no solo desarrollaron la aplicación, sino que entendieron perfectamente mi modelo de negocio y lo tradujeron en una herramienta funcional y profesional.",
+                name: "Cifry De Jesús",
                 role: "Lead Architect, TechFlow",
-                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                avatar: "state/imgs/testimonio_cixfry.jpg",
                 socials: {
-                    linkedin: "https://linkedin.com",
-                    web: "https://techflow.example.com"
+                    linkedin: "https://www.linkedin.com/in/cixfry-de-jesus-7b4329328/",
+                    Instagram: "https://www.instagram.com/cixfrydejesus/",
+                    web: null
                 }
             },
                         {
                 text: "La arquitectura de este sistema es impresionante. Logramos reducir los tiempos de carga en un 40% simplemente integrando sus módulos optimizados.",
                 name: "Lilaila Boock",
-                role: "Lead Architect, TechFlow",
+                role: "Libreria, Editorial ",
                 avatar: "state/imgs/lilaila.png",
                 socials: {
                     linkedin: "https://linkedin.com",
-                    web: "https://techflow.example.com"
+                    Instagram: "https://www.instagram.com/cuadernosliterarios_rd/",
+                    web: null,
                 }
             },
             {
@@ -30,6 +32,7 @@
                 avatar: "https://randomuser.me/api/portraits/women/44.jpg",
                 socials: {
                     linkedin: "https://linkedin.com",
+                    Instagram: "https://instagram.com",                    
                     web: null // Ejemplo: Sin sitio web personal
                 }
             },
@@ -40,6 +43,7 @@
                 avatar: "https://randomuser.me/api/portraits/men/85.jpg",
                 socials: {
                     linkedin: null, // Ejemplo: Sin LinkedIn
+                    Instagram: "https://instagram.com",
                     web: "https://startupx.example.com"
                 }
             }
@@ -57,6 +61,7 @@
             avatar: document.getElementById('user-avatar'),
             linkLinkedin: document.getElementById('link-linkedin'),
             linkWeb: document.getElementById('link-web'),
+            linkInstagram: document.getElementById('link-instagram'),
             btnNext: document.getElementById('next-btn'),
             btnPrev: document.getElementById('prev-btn')
         };
@@ -83,6 +88,15 @@
                 dom.linkWeb.href = data.socials.web;
             } else {
                 dom.linkWeb.style.display = 'none';
+            }
+            
+
+            // Instagram
+            if (data.socials.Instagram) {
+                dom.linkInstagram.style.display = 'inline-flex';
+                dom.linkInstagram.href = data.socials.Instagram;
+            } else {
+                dom.linkInstagram.style.display = 'none';
             }
         }
 

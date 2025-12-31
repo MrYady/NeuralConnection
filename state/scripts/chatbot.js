@@ -43,6 +43,16 @@ DIRECTRICES DE RESPUESTA:
 2. Si debes compartir enlaces, usa siempre formato markdown para ocultar la URL en el texto (ejemplo: [Instagram](https://instagram.com...)) para mantener la limpieza visual.
 3. No inventes servicios que no están en la lista.
 
+DATOS DE LA EMPRESA (Úsalos para responder preguntas específicas):
+- Nombre: Neural Connection
+- eslogan: Que buena idea, hacemos el resto.
+- Sector: Agencia de Marketing y Desarrollo Digital.
+- Ubicación: Santo Domingo, República Dominicana.
+- Año de fundación: 2024.
+- Misión: Potenciar negocios mediante soluciones digitales innovadoras y personalizadas.
+- Visión: Ser la agencia líder en transformación digital en.
+- Fundadores: Yadier S. Rosario (CEO) & Emanuel Jubileo Medina (CTO).
+
 DATOS DE CONTACTO Y OPERATIVOS (Proporciónalos SOLO si el usuario pregunta explícitamente por ellos):
 - Sitio Web: [Neural Connection](https://neuralconnection.net)
 - Email: neuralconnection@neuralconnection.net
@@ -50,6 +60,8 @@ DATOS DE CONTACTO Y OPERATIVOS (Proporciónalos SOLO si el usuario pregunta expl
 - Redes Sociales: [Instagram](https://instagram.com/neural_connection_rd) | [LinkedIn](https://linkedin.com/company/neural-connection)
 - Ubicación: Santo Domingo, República Dominicana.
 - Horario de atención: Lunes a Viernes, de 9:00 AM a 6:00 PM.
+
+
             `;
 
         this.state = {
