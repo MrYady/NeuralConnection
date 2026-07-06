@@ -9,7 +9,7 @@ class NeuralChatbot {
         this.config = {
             ollama: {
                 // NOTA: Para móviles, cambia esto por tu IP local (ej: http://192.168.1.5:11434)
-                baseUrl: "http://localhost:11434", 
+                baseUrl: " http://192.168.1.8:11434", 
                 model: "llama3:8B", 
                 apiKey: "2284d9dcb7e94b2091cbdc804dcb3ae3.EEu-wihQ3KNj_ydh7m3w5HM6" 
             },
