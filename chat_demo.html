@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Connectivity - Arquitectura Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #050510; color: #fff;}
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .glass-panel { 
+            background: rgba(30, 27, 75, 0.6); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(96, 165, 250, 0.2); 
+        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2e3a8c; border-radius: 5px; }
+        
+        .pulse-online { border-radius: 50%; animation: pulse-green 2s infinite; }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] overflow-hidden">
+    
+    <!-- Sidebar: Búsqueda y Sugerencias de Contactos (Algoritmo de Grafos) -->
+    <aside class="w-80 h-full flex flex-col border-r border-[#2e3a8c]/50 glass-panel z-10 block">
+        <div class="p-6 border-b border-[#2e3a8c]/50 flex items-center gap-3">
+            <i data-lucide="network" class="text-[#60a5fa]"></i>
+            <h1 class="font-tech text-lg font-bold tracking-wider text-[#60a5fa]">NEURAL<span class="text-white">LINK</span></h1>
+        </div>
+
+        <div class="p-4 flex-1 overflow-y-auto">
+            <h2 class="text-xs uppercase text-gray-400 font-bold mb-4 tracking-widest">Sugerencias de Red (Grafo)</h2>
+            <div id="contact-list" class="space-y-3">
+                <!-- Se inyectarán los contactos aquí -->
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-[#2e3a8c]/50 bg-[#1e1b4b]/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#60a5fa] to-[#2e3a8c] flex items-center justify-center font-bold">TU</div>
+                <div class="flex-1">
+                    <div class="text-sm font-semibold">Tú (ID: User_901)</div>
+                    <div class="text-xs text-green-400 flex items-center gap-1">
+                        <div class="w-2 h-2 bg-green-500 pulse-online"></div> WebSocket Conectado
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area: Comunicación WebSocket en Tiempo Real -->
+    <main class="flex-1 h-full flex flex-col relative">
+        <!-- Overlay del Background -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1e1b4b]/20 to-[#0f172a]/80 -z-10"></div>
+
+        <header class="h-20 p-6 border-b border-[#2e3a8c]/50 glass-panel flex justify-between items-center z-10">
+            <div class="flex items-center gap-3" id="chat-header-info">
+                <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center" id="chat-avatar">
+                   <i data-lucide="user" class="text-gray-400"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-lg" id="chat-name">Selecciona un contacto</h2>
+                    <span class="text-xs text-gray-400" id="chat-status">Esperando conexión...</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-4 opacity-50">
+                <i data-lucide="phone"></i>
+                <i data-lucide="video"></i>
+                <i data-lucide="more-vertical"></i>
+            </div>
+        </header>
+
+        <div class="flex-1 p-6 overflow-y-auto flex flex-col gap-4 space-y-2 z-10" id="chat-messages">
+            <div class="flex flex-col items-center justify-center h-full text-gray-500 space-y-4 opacity-70">
+                <i data-lucide="radio-tower" class="w-16 h-16 text-[#2e3a8c]"></i>
+                <p class="font-tech">INICIANDO INTERFAZ DE COMUNICACIÓN</p>
+                <p class="text-xs text-center max-w-md">Esta es una simulación frontend del sistema. El algoritmo GraphSearch sugiere contactos basados en intereses de caché, y el chat simula transacciones Pub/Sub de WebSocket.</p>
+            </div>
+        </div>
+
+        <footer class="p-4 border-t border-[#2e3a8c]/50 glass-panel z-10">
+            <form id="chat-form" class="flex gap-3 relative">
+                <input type="text" id="chat-input" disabled placeholder="Conéctate a un nodo para enviar paquetes..." 
+                       class="flex-1 bg-[#0f1014]/80 border border-[#60a5fa]/30 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#60a5fa] text-white disabled:opacity-50 transition-colors">
+                <button type="submit" id="send-btn" disabled 
+                        class="bg-[#2e3a8c] hover:bg-[#60a5fa] text-white px-6 py-3 rounded-lg font-bold transition-all disabled:opacity-50 flex items-center gap-2">
+                    <span class="font-tech text-sm tracking-wider">ENVIAR</span>
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </footer>
+    </main>
+
+    <!-- Simulación del Motor Cliente (Javascript) -->
+    <script>
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        // SIMULACIÓN: Estrategia de búsqueda por Intereses (IContactStrategy del Backend)
+        const mockSuggestedGraphContacts = [
+            { id: "User_102", name: "Elena V.", avatar: "EV", match: "98%", common: ["React", "IA", "Diseño UX"], status: "ONLINE" },
+            { id: "User_405", name: "Marcos T.", avatar: "MT", match: "85%", common: ["Python", "Bases de Datos"], status: "ONLINE" },
+            { id: "User_881", name: "Sarah J.", avatar: "SJ", match: "70%", common: ["Marketing", "Ventas"], status: "OFFLINE" }
+        ];
+
+        let activeContact = null;
+        const contactListEl = document.getElementById('contact-list');
+        const chatMessagesEl = document.getElementById('chat-messages');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatNameEl = document.getElementById('chat-name');
+        const chatStatusEl = document.getElementById('chat-status');
+        const chatAvatarEl = document.getElementById('chat-avatar');
+
+        // Renderizar sugerencias del "grafo"
+        function renderContacts() {
+            contactListEl.innerHTML = '';
+            mockSuggestedGraphContacts.forEach(contact => {
+                const isOnline = contact.status === 'ONLINE';
+                const el = document.createElement('div');
+                el.className = 'p-3 rounded-lg bg-[#0f1014]/60 border border-transparent hover:border-[#60a5fa]/50 cursor-pointer transition-all hover:bg-[#1e1b4b]/40 flex gap-3 group';
+                el.onclick = () => connectToNode(contact);
+
+                el.innerHTML = `
+                    <div class="relative w-10 h-10 rounded-full bg-[#2e3a8c] flex items-center justify-center font-bold shadow-lg">
+                        ${contact.avatar}
+                        ${isOnline ? '<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 pulse-online border-2 border-[#0f1014]"></div>' : ''}
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-sm truncate">${contact.name}</span>
+                            <span class="text-[10px] text-[#60a5fa] font-tech bg-[#2e3a8c]/30 px-1.5 py-0.5 rounded">${contact.match} MATCH</span>
+                        </div>
+                        <div class="text-[10px] text-gray-400 truncate mt-1">Intereses: ${contact.common.join(', ')}</div>
+                    </div>
+                `;
+                contactListEl.appendChild(el);
+            });
+        }
+
+        // Simular conexión IConnectionManager -> WebSocket Channel
+        function connectToNode(contact) {
+            activeContact = contact;
+            
+            // Actualizar Header
+            chatNameEl.innerText = contact.name;
+            chatAvatarEl.innerHTML = contact.avatar;
+            chatAvatarEl.className = "w-10 h-10 rounded-full bg-[#60a5fa] flex items-center text-[#1e1b4b] justify-center font-bold shadow-[0_0_10px_rgba(96,165,250,0.5)]";
+            chatStatusEl.innerHTML = contact.status === 'ONLINE' ? '<span class="text-green-400">Canal WebSocket Abierto</span>' : '<span class="text-gray-400">Usuario Desconectado (Fallback HTTP)</span>';
+
+            // Limpiar Chat con animación
+            chatMessagesEl.innerHTML = '';
+            
+            appendSystemMessage(`Conexión Segura P2P establecida con ${contact.id}`);
+            
+            // Activar Input
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.placeholder = `Encriptando mensajes para ${contact.name}...`;
+            chatInput.focus();
+
+            // Mensaje simulado previo
+            if(contact.status === 'ONLINE') {
+                setTimeout(() => {
+                    appendMessage(`${contact.name} se unió a la red neural.`, 'system');
+                }, 500);
+            }
+        }
+
+        function appendMessage(text, type = 'user') {
+            const div = document.createElement('div');
+            div.className = 'w-full flex fade-in ' + (type === 'user' ? 'justify-end' : 'justify-start');
+            
+            if (type === 'system') {
+                div.className = 'w-full flex justify-center fade-in my-2';
+                div.innerHTML = `<span class="bg-[#1e1b4b]/80 border border-[#60a5fa]/30 text-[#60a5fa] text-[10px] py-1 px-3 rounded-full font-tech tracking-wide">${text}</span>`;
+            } else {
+                const bubble = document.createElement('div');
+                bubble.className = `p-3 rounded-xl max-w-[75%] text-sm shadow-lg ${
+                    type === 'user' 
+                    ? 'bg-gradient-to-br from-[#2e3a8c] to-[#1e1b4b] border border-[#60a5fa]/50 rounded-tr-none text-white'
+                    : 'bg-[#0f1014] border border-gray-700 rounded-tl-none text-gray-200'
+                }`;
+                bubble.innerText = text;
+                
+                // Timestamp
+                const time = document.createElement('div');
+                time.className = `text-[9px] mt-1 opacity-50 text-right`;
+                time.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                bubble.appendChild(time);
+
+                div.appendChild(bubble);
+            }
+
+            chatMessagesEl.appendChild(div);
+            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+        }
+
+        function appendSystemMessage(text) {
+            appendMessage(text, 'system');
+        }
+
+        // Manejar el submit (Simula la publicación en el Message Broker)
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const msg = chatInput.value.trim();
+            if (!msg || !activeContact) return;
+
+            // 1. Mostrar localmente instantáneo (Optimistic UI Update)
+            appendMessage(msg, 'user');
+            chatInput.value = '';
+
+            // 2. Simular latencia de red y Message Broker (RabbitMQ)
+            setTimeout(() => {
+                if(activeContact.status === "ONLINE") {
+                    // Simular respuesta del receptor en tiempo real vía Pub/Sub redis
+                    setTimeout(() => {
+                        appendMessage(`[ACK] Paquete recibido de maravilla.`, 'receiver');
+                    }, 1500 + Math.random() * 1000);
+                }
+            }, 300);
+        });
+
+        // Inicio
+        setTimeout(renderContacts, 800);
+    </script>
+</body>
+</html>

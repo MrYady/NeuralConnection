@@ -10,7 +10,7 @@ class NeuralChatbot {
             ollama: {
                 // NOTA: Para móviles, cambia esto por tu IP local (ej: http://192.168.1.5:11434)
                 baseUrl: "http://localhost:11434", 
-                model: "llama3.2", 
+                model: "llama3:8B", 
                 apiKey: "2284d9dcb7e94b2091cbdc804dcb3ae3.EEu-wihQ3KNj_ydh7m3w5HM6" 
             },
             email: {
@@ -78,14 +78,27 @@ DATOS DE CONTACTO Y OPERATIVOS (Proporciónalos SOLO si el usuario pregunta expl
     }
 
     async init() {
-        console.log("🦙 Rubik v7.1 Initializing...");
+        console.log("🦙 Rubik v7.2 Initializing...");
         await this.injectDependencies();
         this.injectStyles();
         this.injectHTML();
         this.cacheDOM();
         this.bindEvents();
         if (window.emailjs) emailjs.init(this.config.email.publicKey);
-        this.addSystemMessage("Hola. Soy **Rubik**, tu asistente en *Neural Connection*. ¿En qué puedo ayudarte hoy?");
+        this.addSystemMessage("¡Hola! Soy **Rubik**, tu asistente de inteligencia artificial en *Neural Connection*. ¿Cómo puedo impulsar tu negocio hoy?");
+        this.addQuickActions();
+    }
+
+    addQuickActions() {
+        const div = document.createElement('div');
+        div.className = 'flex flex-wrap gap-2 w-full mb-4 justify-start nc-fade-in pl-2 pr-4 mt-2';
+        div.innerHTML = `
+            <button onclick="document.getElementById('nc-input').value='Quiero agendar una asesoría'; document.getElementById('nc-send-btn').click(); this.parentElement.remove();" class="text-xs bg-white text-nc-primary border border-slate-200 px-3 py-2 rounded-xl hover:bg-nc-primary hover:text-white hover:border-nc-primary transition-all cursor-pointer shadow-sm font-medium">📅 Agendar Asesoría</button>
+            <button onclick="document.getElementById('nc-input').value='Cotizar Desarrollo Web'; document.getElementById('nc-send-btn').click(); this.parentElement.remove();" class="text-xs bg-white text-nc-primary border border-slate-200 px-3 py-2 rounded-xl hover:bg-nc-primary hover:text-white hover:border-nc-primary transition-all cursor-pointer shadow-sm font-medium">💻 Cotizar Web</button>
+            <button onclick="document.getElementById('nc-input').value='Necesito contactarme con un humano'; document.getElementById('nc-send-btn').click(); this.parentElement.remove();" class="text-xs bg-white text-nc-primary border border-slate-200 px-3 py-2 rounded-xl hover:bg-nc-primary hover:text-white hover:border-nc-primary transition-all cursor-pointer shadow-sm font-medium">👋 Hablar con Ventas</button>
+        `;
+        this.dom['nc-chat-history'].appendChild(div);
+        this.scrollToBottom();
     }
 
     async injectDependencies() {
@@ -140,8 +153,8 @@ DATOS DE CONTACTO Y OPERATIVOS (Proporciónalos SOLO si el usuario pregunta expl
         container.className = 'nc-font antialiased fixed z-[10000]'; 
         
         container.innerHTML = `
-            <button id="nc-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-nc-primary text-white rounded-full shadow-xl hover:bg-nc-secondary transition-all duration-300 flex items-center justify-center transform hover:scale-110 border-2 border-white z-[10001]">
-                <i class="fa-solid fa-robot text-2xl"></i>
+            <button id="nc-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-nc-primary text-white rounded-full shadow-[0_10px_25px_-5px_rgba(79,70,229,0.5)] hover:bg-nc-secondary transition-all duration-300 flex items-center justify-center transform hover:scale-105 z-[10001]">
+                <i class="fa-solid fa-message text-xl"></i>
             </button>
 
             <div id="nc-modal" class="hidden fixed 

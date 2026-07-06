@@ -1,0 +1,281 @@
+<!-- <!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Connection | Portafolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .timeline-line { background: linear-gradient(to bottom, #22d3ee, #a855f7, #f97316); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+    </style>
+</head>
+<body class="text-slate-200 antialiased overflow-x-hidden">
+
+    <canvas id="neuralCanvas"></canvas>
+
+    <div class="fixed left-1/2 top-0 w-0.5 h-full bg-slate-800 -translate-x-1/2 z-0 hidden md:block">
+        <div id="scrollProgress" class="w-full timeline-line shadow-[0_0_15px_#22d3ee] origin-top scale-y-0 h-full"></div>
+    </div>
+
+    <main class="relative z-10 container mx-auto px-6">
+        
+        <section class="h-screen flex flex-col justify-center items-center text-center">
+            <div class="inline-block px-4 py-1 mb-6 border border-cyan-500/30 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold tracking-widest uppercase animate-pulse">
+                Neural Connection V2.0
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-white via-slate-400 to-slate-600 bg-clip-text text-transparent italic">
+                Portafolio NC
+            </h1>
+            <p class="max-w-2xl text-slate-400 text-lg md:text-xl mb-10 leading-relaxed">
+                Cronología de innovaciones digitales y colaboraciones estratégicas. <br class="hidden md:block">
+                <span class="text-cyan-400 font-semibold">Fusionando seguridad, diseño y experiencia de usuario.</span>
+            </p>
+            <div class="animate-bounce text-cyan-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </section>
+
+        <section class="reveal min-h-[60vh] flex flex-col md:flex-row justify-between items-center mb-32 relative">
+            <div class="md:w-5/12 glass p-8 rounded-3xl group hover:border-cyan-500/50 transition-all duration-500">
+                <span class="text-cyan-400 text-sm font-mono border border-cyan-500/20 px-3 py-1 rounded-md">Marzo 2025</span>
+                <div class="mt-6 mb-4 h-48 bg-slate-900 rounded-xl overflow-hidden relative">
+                    <div class="absolute inset-0 flex items-center justify-center text-cyan-500 font-bold opacity-20 group-hover:opacity-40 transition-opacity">DIO-DIM INTERFACE</div>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 flex items-center gap-2">DIO-DIM <span class="text-xl">🛡️</span></h2>
+                <p class="text-slate-400 mb-6">Sistema de inteligencia para la Dirección de Operaciones Migratorias. Generación y validación de credenciales QR en tiempo real.</p>
+                <div class="flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded uppercase tracking-tighter">Seguridad</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded uppercase tracking-tighter">Gobierno</span>
+                </div>
+            </div>
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_15px_#22d3ee]"></div>
+        </section>
+
+        <section class="reveal min-h-[60vh] flex flex-col md:flex-row-reverse justify-between items-center mb-32 relative">
+            <div class="md:w-5/12 glass p-8 rounded-3xl group hover:border-orange-500/50 transition-all duration-500">
+                <span class="text-orange-400 text-sm font-mono border border-orange-500/20 px-3 py-1 rounded-md">Abril 2025</span>
+                <div class="mt-6 mb-4 h-48 bg-slate-900 rounded-xl overflow-hidden relative">
+                    <div class="absolute inset-0 flex items-center justify-center text-orange-500 font-bold opacity-20 group-hover:opacity-40 transition-opacity">DeUna APP</div>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 flex items-center gap-2">DeUna <span class="text-xl">🔧</span></h2>
+                <p class="text-slate-400 mb-6">Plataforma "Uber-like" para servicios técnicos certificados. La solución inmediata para el hogar.</p>
+                <div class="flex gap-2">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded uppercase tracking-tighter">App Dev</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded uppercase tracking-tighter">Strategy</span>
+                </div>
+            </div>
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-orange-500 shadow-[0_0_15px_#f97316]"></div>
+        </section>
+
+        <section class="reveal min-h-[60vh] flex flex-col md:flex-row justify-between items-center mb-48 relative">
+            <div class="md:w-5/12 glass p-8 rounded-3xl border-purple-500/30 group hover:border-purple-500 transition-all duration-500">
+                <span class="text-purple-400 text-sm font-mono border border-purple-500/20 px-3 py-1 rounded-md italic">Próximamente 2026</span>
+                <div class="mt-6 mb-4 h-48 bg-purple-950/20 rounded-xl flex items-center justify-center">
+                    <span class="text-4xl">🎬</span>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">Cinéfilo</h2>
+                <p class="text-slate-400 mb-6">Plataforma inmersiva de streaming nicho para críticos y curadores de arte cinematográfico.</p>
+                <div class="flex gap-2">
+                    <span class="bg-purple-900/30 text-purple-300 text-[10px] px-2 py-1 rounded uppercase tracking-tighter border border-purple-500/20">UI/UX</span>
+                    <span class="bg-purple-900/30 text-purple-300 text-[10px] px-2 py-1 rounded uppercase tracking-tighter border border-purple-500/20">Full Stack</span>
+                </div>
+            </div>
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-purple-600 shadow-[0_0_20px_#a855f7] animate-ping"></div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. FONDO DE RED NEURONAL (CANVAS) ---
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for(let i=0; i<80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(34, 211, 238, 0.5)';
+            ctx.strokeStyle = 'rgba(34, 211, 238, 0.05)';
+
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
+                ctx.fill();
+
+                for(let j=i+1; j<particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(draw);
+        }
+
+        // --- 2. LÓGICA DE SCROLL Y REVELADO ---
+        const scrollProgress = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const totalHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / totalHeight);
+            scrollProgress.style.transform = `scaleY(${progress})`;
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        draw();
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Connection | Portafolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../stylers/portafolio.css">
+</head>
+<body class="text-slate-200 antialiased overflow-x-hidden bg-slate-950">
+
+    <canvas id="neuralCanvas"></canvas>
+
+    <div class="fixed left-1/2 top-0 w-px h-full bg-slate-800 -translate-x-1/2 z-0 hidden md:block">
+        <div id="scrollProgress" class="w-full h-full origin-top scale-y-0 shadow-[0_0_15px_#22d3ee]"></div>
+    </div>
+
+    <main class="relative z-10 container mx-auto px-6">
+        
+        <header class="h-screen flex flex-col justify-center items-center text-center">
+            <div class="badge-nc animate-pulse">Neural Connection</div>
+            <h1 class="hero-title">Portafolio NC</h1>
+            <p class="hero-subtitle">
+                Cronología de innovaciones digitales y colaboraciones estratégicas.
+            </p>
+            <div class="mt-12 text-cyan-500 animate-bounce">
+                <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </header>
+
+        <div id="projects-container">
+
+            <section class="project-row project-left">
+                <div class="project-card border-cyan-500/30 group">
+                    <span class="tag-year text-cyan-400">Marzo 2025</span>
+                    <div class="img-placeholder">
+                        <span class="opacity-20">DIO-DIM QR</span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4">DIO-DIM 🛡️</h2>
+                    <p class="text-slate-400 mb-6">Sistema de inteligencia para la Dirección de Operaciones Migratorias. Validación QR en tiempo real.</p>
+                    <div class="flex gap-2">
+                        <span class="tech-pill">Seguridad</span>
+                        <span class="tech-pill">QR Gen</span>
+                        <span class="tech-pill">Gobierno</span>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-cyan-500 shadow-cyan-500/50"></div>
+            </section>
+
+            <section class="project-row project-right">
+                <div class="project-card border-orange-500/30 group">
+                    <span class="tag-year text-orange-400">Proximamente</span>
+                    <div class="img-placeholder">
+                        <span class="opacity-20 text-orange-500">BioScam App</span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4">BioScam ⛶</h2>
+                    <p class="text-slate-400 mb-6">Aplicación transforma tu información médica crítica en un código QR seguro y accesible. Diseñada para situaciones de emergencia, permite almacenar datos vitales.</p>
+                    <div class="flex gap-2">
+                        <span class="tech-pill">App Dev</span>
+                        <span class="tech-pill">App Dev</span>
+                        <span class="tech-pill">Strategy</span>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-orange-500 shadow-orange-500/50"></div>
+            </section>
+
+            
+            <section class="project-row project-left">
+                <div class="project-card border-orange-500/30 group">
+                    <span class="tag-year text-orange-400">Proximamente</span>
+                    <div class="img-placeholder">
+                        <span class="opacity-20 text-orange-500">DeUna App</span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4">DeUna 🔧</h2>
+                    <p class="text-slate-400 mb-6">Plataforma que conecta tus urgencias de mecánica, electricidad y plomería con expertos certificados cerca de ti. Tan fácil como pedir un viaje.</p>
+                    <div class="flex gap-2">
+                        <span class="tech-pill">App Dev</span>
+                        <span class="tech-pill">Branding</span>
+                        <span class="tech-pill">Strategy</span>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-orange-500 shadow-orange-500/50"></div>
+            </section>
+
+                        <section class="project-row project-right">
+                <div class="project-card border-orange-500/30 group">
+                    <span class="tag-year text-orange-400">Proximamente</span>
+                    <div class="img-placeholder">
+                        <span class="opacity-20 text-orange-500">Cinéfilo</span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4">Cinéfilo 🔧</h2>
+                    <p class="text-slate-400 mb-6">Es una infraestructura de inferencia neuronal diseñada para transformar datos no estructurados del ecosistema del entretenimiento (guiones, reseñas críticas, patrones de taquilla) en grafos de conocimiento estructurados y consultables en tiempo real.</p>
+                    <div class="flex gap-2">
+                        <span class="tech-pill">UI/UX</span>
+                        <span class="tech-pill">Branding</span>
+                        <span class="tech-pill">Streaming</span>
+                        <span class="tech-pill">Full Stack</span>
+                    </div>
+                </div>
+                <div class="timeline-dot bg-orange-500 shadow-orange-500/50"></div>
+            </section>
+
+            </div>
+
+        <div class="h-40"></div>
+    </main>
+
+    <script src="../scripts/portafolio.js"></script>
+    <script src="../scripts/chatbot.js"></script>
+    <script src="../scripts/menuHa.js"></script>
+</body>
+</html>
